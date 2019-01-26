@@ -79,14 +79,19 @@ public class BasePiece : MonoBehaviour
 
     //public bool[,] PieceDimensions;
     //public Vector2Int PivotCoordinates;
+    public PieceHighlight PieceHighlightPrefab;
+    public Transform PieceHighlightHolder;
+
     public PieceDimension PieceInfo;
     public RotationDirection CurrentRotation;
-
+    public PieceHighlight[] CurrentHighlights { get; protected set; }
     //protected Vector2Int[,] RelativeDirections;
 
     private void Awake()
     {
         PieceInfo.Init();
+
+        InitHighlights();
 
         //Debug.Log("Done");
 
@@ -100,6 +105,39 @@ public class BasePiece : MonoBehaviour
         //        RelativeDirections[i, k] = new Vector2Int(i - PivotCoordinates.x, k - PivotCoordinates.y);
         //    }
         //}
+    }
+
+    protected void InitHighlights()
+    {
+        PieceDimension.Row[] columns = PieceInfo.Columns;
+
+        if (columns == null)
+            return;
+
+        float width = 1f;
+        List<PieceHighlight> attachedHighlights = new List<PieceHighlight>();
+        for (int y = 0; y < columns.Length; y++)
+        {
+            bool[] rowItems = columns[y].RowBools;
+
+            if (rowItems == null)
+                continue;
+
+            for (int x = 0; x < rowItems.Length; x++)
+            {
+                if (!rowItems[x])
+                    continue;
+
+                Vector2Int drawOffset = PieceInfo.GetRelativeIndex(x, y);
+                Vector3 cubePosition = transform.localPosition;
+                cubePosition += new Vector3(drawOffset.x * width, 0f, drawOffset.y);
+
+                PieceHighlight thisHighlight = PieceHighlightHolder.InstantiateChild<PieceHighlight>(PieceHighlightPrefab.gameObject);
+                thisHighlight.transform.localPosition = cubePosition;
+            }
+        }
+
+        CurrentHighlights = attachedHighlights.ToArray();
     }
 
     public List<Vector2Int> GetRelativeLocationFromPoint(int x, int y)
@@ -149,7 +187,7 @@ public class BasePiece : MonoBehaviour
                         for (int k = 0; k < PieceDimensions.GetLength(1); k++)
                         {
                             int checkIndex = direction == RotationDirection.Rotate180 ? PieceDimensions.GetLength(1) - k - 1 : k;
-                            rotatedDirection.PieceDimensions[newRow, newColumn] = PieceDimensions[i, k];
+                            rotatedDirection.PieceDimensions[newRow, newColumn] = PieceDimensions[i, checkIndex];
 
                             // Add in the new pivotPoint into this location
                             if (normalDimensions.PivotPoint.x == i && normalDimensions.PivotPoint.y == k)
@@ -208,4 +246,35 @@ public class BasePiece : MonoBehaviour
     //    }
     //    return newMatrix;
     //}
+
+    void OnDrawGizmosSelected()
+    {
+        PieceDimension.Row[] columns = PieceInfo.Columns;
+
+        if (columns == null)
+            return;
+
+        float width = 1f;
+
+        for (int y = 0; y < columns.Length; y++)
+        {
+            bool[] rowItems = columns[y].RowBools;
+
+            if (rowItems == null)
+                continue;
+
+            for (int x = 0; x < rowItems.Length; x++)
+            {
+                if (!rowItems[x])
+                    continue;
+
+                Vector2Int drawOffset = PieceInfo.GetRelativeIndex(x, y);
+                Vector3 cubePosition = transform.localPosition;
+                cubePosition += new Vector3(drawOffset.x * width, 0f, drawOffset.y);
+
+                Gizmos.DrawWireCube(cubePosition, new Vector3(width, width, width));
+            }
+        }
+
+    }
 }
