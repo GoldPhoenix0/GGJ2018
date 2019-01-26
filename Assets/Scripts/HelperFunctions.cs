@@ -11,11 +11,50 @@ public static class HelperFunctions
             return default(T);
 
         GameObject newObject = GameObject.Instantiate(prefab, transform);
+        Transform newTransform = newObject.transform;
 
-        newObject.transform.localPosition = Vector3.zero;
-        newObject.transform.localScale = Vector3.one;
-        newObject.transform.localRotation = Quaternion.identity;
+        if (!string.IsNullOrEmpty(name))
+            newObject.gameObject.name = name;
+        newTransform.localPosition = Vector3.zero;
+        newTransform.localScale = Vector3.one;
+        newTransform.localRotation = Quaternion.identity;
 
         return newObject.GetComponent<T>();
+    }
+
+    public static IEnumerator PulseAlpha(this Material material, Color startColor, float targetAlpha, float duration = 1f, bool loop = true)
+    {
+        if (duration <= 0)
+            duration = 1f;
+
+        material.color = startColor;
+
+        int numLoops = 0;
+        float currentTime = 0f;
+        float startTargetAlpha = startColor.a;
+        float currentTargetAlpha = targetAlpha;
+        while (material != null)
+        {
+            yield return null;
+            currentTime += Time.deltaTime;
+
+            if (currentTime >= duration)
+            {
+                numLoops++;
+
+                if (!loop && numLoops > 1)
+                    break;
+
+                currentTime = 0f;
+
+                currentTargetAlpha = Mathf.Approximately(currentTargetAlpha, targetAlpha) ? startTargetAlpha : targetAlpha;
+            }
+
+            Color color = material.color;
+            color.a = Mathf.Lerp(color.a, currentTargetAlpha, currentTime / duration); //Mathf.Lerp(color.a, currentTargetAlpha, Easings.Interpolate(currentTime / duration, Easings.Functions.SineEaseInOut)); //Mathf.SmoothStep(color.a, currentTargetAlpha, currentTime / duration);
+            material.color = color;
+        }
+
+        material.color = startColor;
     }
 }

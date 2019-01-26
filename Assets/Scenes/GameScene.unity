@@ -113,52 +113,33 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &306690532
+--- !u!1 &316983864
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 306690534}
-  - component: {fileID: 306690533}
+  - component: {fileID: 316983865}
   m_Layer: 0
-  m_Name: Piece
+  m_Name: PieceHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &306690533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 306690532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac4dd981d62e864468d3fa07eff312bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PieceInfo:
-    InspectorValues:
-    - RowBools: 010101
-    - RowBools: 0100
-    - RowBools: 010101
-    PivotPoint: {x: 0, y: 0}
-  CurrentRotation: 0
---- !u!4 &306690534
+--- !u!4 &316983865
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 306690532}
+  m_GameObject: {fileID: 316983864}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1933472996}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &356117906
 GameObject:
@@ -187,10 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a246bd403431743b1017d30a12404b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PiecePrefabs: []
+  PiecePrefabs:
+  - {fileID: 114783724706833228, guid: d41ed57f87b8a874981cfa70151290c5, type: 2}
   BoardGridLocationPrefab: {fileID: 114904130037546426, guid: 769ec3dd8d6237e40976eb66876d6ff5,
     type: 2}
   BoardGridHolder: {fileID: 1933472996}
+  PieceHolder: {fileID: 316983865}
+  tempPiece: {fileID: 0}
+  checkRotation: 0
 --- !u!4 &356117908
 Transform:
   m_ObjectHideFlags: 0
@@ -305,7 +290,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 316983865}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
