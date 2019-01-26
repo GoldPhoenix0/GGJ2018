@@ -134,11 +134,44 @@ public class BasePiece : MonoBehaviour
 
                 PieceHighlight thisHighlight = PieceHighlightHolder.InstantiateChild<PieceHighlight>(PieceHighlightPrefab.gameObject);
                 thisHighlight.transform.localPosition = cubePosition;
+
+                attachedHighlights.Add(thisHighlight);
             }
         }
 
         CurrentHighlights = attachedHighlights.ToArray();
+
+        UpdateHits();
     }
+
+    public void RotatePiece(RotationDirection newRotation)
+    {
+        CurrentRotation = newRotation;
+        Vector3 newRotationEuler = Vector3.zero;
+
+        switch(CurrentRotation)
+        {
+            case RotationDirection.Rotate90: newRotationEuler = new Vector3(0, 90, 0); break;
+            case RotationDirection.Rotate180: newRotationEuler = new Vector3(0, 180, 0); break;
+            case RotationDirection.Rotate270: newRotationEuler = new Vector3(0, 270, 0); break;
+
+            default:
+            case RotationDirection.Normal: break;
+        }
+
+        PieceHighlightHolder.localRotation = Quaternion.Euler(newRotationEuler);
+        UpdateHits();
+    }
+
+    public void UpdateHits()
+    {
+        for (int i = 0; i < CurrentHighlights.Length; i++)
+        {
+            bool isValid = CurrentHighlights[i].IsGridPositionValid();
+            CurrentHighlights[i].EnableColor(isValid, true);
+        }
+    }
+
 
     public List<Vector2Int> GetRelativeLocationFromPoint(int x, int y)
     {

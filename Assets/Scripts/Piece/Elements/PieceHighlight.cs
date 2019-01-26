@@ -14,6 +14,8 @@ public class PieceHighlight : MonoBehaviour
     private int _y;
     public int Y { get { return _y; } set { _y = value; } }
 
+    public BoardGridLocation FoundGridPosition { get; protected set; }
+
     protected Coroutine IsAnimatingColorCoroutine;
 
     protected void Awake()
@@ -21,7 +23,7 @@ public class PieceHighlight : MonoBehaviour
         Renderer renderer = gameObject.GetComponent<Renderer>();
         thisMaterial = renderer.material;
 
-        EnableColor(Random.value > 0.5f, true);
+        //EnableColor(Random.value > 0.5f, true);
     }
 
     public void EnableColor(bool isValid, bool pulseColor = false)
@@ -50,5 +52,36 @@ public class PieceHighlight : MonoBehaviour
     {
         ClearPulseAnimation();
         thisMaterial.color = new Color32(255, 255, 255, 0);
+    }
+
+    public bool IsGridPositionValid()
+    {
+        Ray ray = new Ray(transform.position + Vector3.up, Vector3.down * 5);
+        RaycastHit[] allHits = Physics.RaycastAll(ray);
+
+        
+
+        FoundGridPosition = null;
+
+        for (int i = 0; i < allHits.Length; i++)
+        {
+            RaycastHit checkHit = allHits[i];
+
+            BoardGridLocation gridLocation = checkHit.transform.GetComponent<BoardGridLocation>();
+
+            if (gridLocation == null)
+                continue;
+
+            FoundGridPosition = gridLocation;
+
+            return !gridLocation.InUse;
+        }
+
+        return false;
+    }
+
+    private void Update()
+    {
+        Debug.DrawRay(transform.position + Vector3.up, Vector3.down * 5);
     }
 }

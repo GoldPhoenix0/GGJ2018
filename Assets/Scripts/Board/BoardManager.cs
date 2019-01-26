@@ -66,14 +66,15 @@ public class BoardManager : MonoBehaviour
                 if (hoveredTransform == null)
                     return;
 
-                Debug.Log("hit object at " + hoveredTransform.X + "," + hoveredTransform.Y);
+                //Debug.Log("hit object at " + hoveredTransform.X + "," + hoveredTransform.Y);
 
                 tempPiece.transform.localPosition = hoveredTransform.transform.localPosition;
+                tempPiece.UpdateHits();
             }
         }
         if(Input.GetMouseButtonDown(1))
         {
-            ChangeRotation(-1);
+            ChangeRotation(1);
         }
     }
 
@@ -82,8 +83,8 @@ public class BoardManager : MonoBehaviour
         int nextRotationIndex = ((int)checkRotation + dir + (int)BasePiece.RotationDirection.Count) % (int)BasePiece.RotationDirection.Count;
         checkRotation = (BasePiece.RotationDirection)nextRotationIndex;
 
-        //if (tempPiece != null)
-        //   tempPiece.RotatePiece(checkRotation);
+        if (tempPiece != null)
+            tempPiece.RotatePiece(checkRotation);
     }
 
     /// <summary>
