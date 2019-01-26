@@ -67,8 +67,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee8794d27d7f2f4db3050fd51834dcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scorePanel: {fileID: 1137145446327506, guid: 3cf3df21c32ac334e917be9758ccc037, type: 2}
-  scoreDisplayPrefab: {fileID: 1469288642766362}
+  scorePanel: {fileID: 1469288642766362}
+  scoreDisplayPrefab: {fileID: 1137145446327506, guid: 3cf3df21c32ac334e917be9758ccc037,
+    type: 2}
 --- !u!222 &222921894947614900
 CanvasRenderer:
   m_ObjectHideFlags: 1

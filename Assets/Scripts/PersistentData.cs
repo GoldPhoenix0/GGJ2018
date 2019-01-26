@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PersistentData : MonoBehaviour
 {
-    public int NumberOfPlayers = 2;
-    public int MaxNumberOfPlayers = 4;
+    public int NumberOfPlayers = 3;
+    public int MaxNumberOfPlayers = 7;
 
     public int BoardXSize = 5;
     public int BoardYSize = 10;
