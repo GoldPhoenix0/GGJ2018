@@ -4,10 +4,63 @@ using UnityEngine;
 
 public class BasePiece : MonoBehaviour
 {
+    [System.Serializable]
     public struct PieceDimension
     {
+        [System.Serializable]
+        public class Row
+        {
+            public bool[] RowBools;
+        }
+
+        public Row[] Columns;
+
+
         public bool[,] PieceDimensions;
         public Vector2Int PivotPoint;
+
+        public void Init()
+        {
+            int xLength = 0, yLength = 0;
+
+            if(Columns != null)
+            {
+                yLength = Columns.Length;
+
+                for (int i = 0; i < Columns.Length; i++)
+                {
+                    if (Columns[i] == null)
+                        continue;
+
+                    bool[] RowValues = Columns[i].RowBools;
+
+                    if (RowValues == null)
+                        continue;
+
+                    xLength = Mathf.Max(xLength, RowValues.Length);
+                }
+            }
+
+            PieceDimensions = new bool[xLength, yLength];
+
+            for (int y = 0; y < PieceDimensions.GetLength(0); y++)
+            {
+                if (Columns == null || y >= Columns.Length || Columns[y] == null)
+                    continue;
+
+                bool[] rowBools = Columns[y].RowBools;
+
+                for (int x = 0; x < PieceDimensions.GetLength(1); x++)
+                {
+                    bool setValue = false;
+
+                    if (rowBools != null && x < rowBools.Length)
+                        setValue = rowBools[x];
+
+                    PieceDimensions[y, x] = setValue;
+                }
+            }
+        }
 
         public Vector2Int GetRelativeIndex(int x, int y)
         {
@@ -33,6 +86,10 @@ public class BasePiece : MonoBehaviour
 
     private void Awake()
     {
+        PieceInfo.Init();
+
+        //Debug.Log("Done");
+
         //RelativeDirections = new Vector2Int[PieceDimensions.GetLength(0), PieceDimensions.GetLength(1)];
 
         //// Calculate the Dimensions here
@@ -117,10 +174,10 @@ public class BasePiece : MonoBehaviour
                         for (int k = 0; k < PieceDimensions.GetLength(0); k++)
                         {
                             int checkIndex = direction == RotationDirection.Rotate270 ? PieceDimensions.GetLength(0) - k - 1 : k;
-                            rotatedDirection.PieceDimensions[newRow, newColumn] = PieceDimensions[i, k];
+                            rotatedDirection.PieceDimensions[newRow, newColumn] = PieceDimensions[i, checkIndex];
                             
                             // Add in the new pivotPoint into this location
-                            if (normalDimensions.PivotPoint.x == i && normalDimensions.PivotPoint.y == k)
+                            if (normalDimensions.PivotPoint.x == i && normalDimensions.PivotPoint.y == checkIndex)
                                 rotatedDirection.PivotPoint = new Vector2Int(newRow, newColumn);
 
                             newColumn++;

@@ -4,20 +4,51 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    public BasePiece[] BasePieces;
+    public BasePiece[] PiecePrefabs;
+    public BoardGridLocation BoardGridLocationPrefab;
+    public Transform BoardGridHolder;
 
-    public BoardGridLocation[,] BoardGridLocations;
 
+    public BoardGridLocation[,] BoardGridLocations { get; protected set; }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    private void Start()
+    {
+        Init();
+    }
+
+    public Coroutine Init()
+    {
+        return StartCoroutine(InitAsync());
+    }
+
+    public IEnumerator InitAsync()
+    {
+        GenerateBoard();
+
+        yield break;
+    }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void GenerateBoard(int gridX = 10, int gridY = 10)
+    {
+        BoardGridLocations = new BoardGridLocation[gridX, gridY];
+
+        for (int x = 0; x < BoardGridLocations.GetLength(0); x++)
+        {
+            for (int y = 0; y < BoardGridLocations.GetLength(1); y++)
+            {
+                BoardGridLocation thisLocation = BoardGridHolder.InstantiateChild<BoardGridLocation>(BoardGridLocationPrefab.gameObject, x + "_" + y + BoardGridLocationPrefab.name);
+                float width = thisLocation.Width;
+                thisLocation.transform.localPosition = new Vector3(width * x,0f,  width * y);
+                thisLocation.X = x;
+                thisLocation.Y = y;
+                BoardGridLocations[x, y] = thisLocation;
+                thisLocation.SetMaterial(x + y);
+            }
+        }
+    }
+
+
 
     /// <summary>
     /// 
