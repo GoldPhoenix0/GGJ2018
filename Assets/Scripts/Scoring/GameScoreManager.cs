@@ -75,17 +75,20 @@ public class GameScoreManager : MonoBehaviour
             finalScores.Add(checkScore.PlayerNumber, checkScore.PlayerScoreValue);
         }
 
-        var orderedList = finalScores.OrderBy(x => x.Value);
+        var orderedList = finalScores.OrderByDescending(x => x.Value);
 
         int resultLine = 0;
+        int highScore = int.MinValue;
         string resultsText = "";
+        string winningPlayerNames = "";
+
         foreach(KeyValuePair<int, int> order in orderedList)
         {
             int playerNumber = order.Key + 1;
 
             if(resultLine == 0)
             {
-                ResultsHeading.text = "Player " + HelperFunctions.ConvertNumberToText(playerNumber) + " Wins!";
+                highScore = order.Value;
 
                 ResultsBackground.color = PersistentData.instance.PlayerColors[order.Key];
             }
@@ -94,11 +97,21 @@ public class GameScoreManager : MonoBehaviour
                 resultsText += "\n";
             }
 
+            // Add all players to the heading
+            if(highScore == order.Value)
+            {
+                if (resultLine > 0)
+                    winningPlayerNames += " & ";
+
+                winningPlayerNames += HelperFunctions.ConvertNumberToText(playerNumber);
+            }
+
             resultsText += "Player " + playerNumber.ToString() + " - " + order.Value.ToString();
 
             resultLine++;
         }
 
+        ResultsHeading.text = "Player " + winningPlayerNames + " Wins!";
         ResultsList.text = resultsText;
 
     }

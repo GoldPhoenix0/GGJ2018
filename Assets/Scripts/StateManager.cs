@@ -152,15 +152,21 @@ public class StateManager : MonoBehaviour {
 
         if(BoardManager.instance.IsGameOver())
         {
-            // Show Game Ending Flair Here!
-            currentState = gameState.RestartGame;
-            _timer = 0;
-            GSM.ShowResultsScreen();
+            OnGameOverStart();
             return;
         }
 
         InitRound();
 
+    }
+
+    public void OnGameOverStart()
+    {
+        // Show Game Ending Flair Here!
+        currentState = gameState.RestartGame;
+        _timer = 0;
+        BoardManager.instance.CurrentSelectedPiece = null;
+        GSM.ShowResultsScreen();
     }
 
     private void RevealPlacedPiece()
