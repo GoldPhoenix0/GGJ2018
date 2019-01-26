@@ -5,10 +5,13 @@ using UnityEngine;
 public class PersistentData : MonoBehaviour
 {
     public int NumberOfPlayers = 2;
-    public int MaxNumberOfPlayers = 4;
+    public int MaxNumberOfPlayers = 8;
 
     public int BoardXSize = 5;
     public int BoardYSize = 10;
+
+    public int MinBoardSize = 5;
+    public int MaxBoardSize = 20;
 
     public Color32[] PlayerColors = new Color32[10]
     {

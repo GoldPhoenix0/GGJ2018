@@ -13,6 +13,10 @@ public class MenuScript : MonoBehaviour {
     [SerializeField]
     private Text NumberOfPlayersUI;
 
+    [SerializeField]
+    private Text GridXUI;
+    [SerializeField]
+    private Text GridYUI;
 
     public void ChangeNumberOfPlayers(int deltaNOP)
     {
@@ -28,9 +32,38 @@ public class MenuScript : MonoBehaviour {
         NumberOfPlayersUI.text = PersistentData.instance.NumberOfPlayers.ToString();
     }
 
+    public void ChangeGridXSize(int deltaNOP)
+    {
+        PersistentData.instance.BoardXSize += deltaNOP;
+
+        if (PersistentData.instance.BoardXSize < PersistentData.instance.MinBoardSize)
+            PersistentData.instance.BoardXSize = PersistentData.instance.MaxBoardSize;
+
+        if (PersistentData.instance.BoardXSize > PersistentData.instance.MaxBoardSize)
+            PersistentData.instance.BoardXSize = PersistentData.instance.MinBoardSize;
+
+        GridXUI.text = PersistentData.instance.BoardXSize.ToString();
+    }
+
+    public void ChangeGridYSize(int deltaNOP)
+    {
+        PersistentData.instance.BoardYSize += deltaNOP;
+
+        if (PersistentData.instance.BoardYSize < PersistentData.instance.MinBoardSize)
+            PersistentData.instance.BoardYSize = PersistentData.instance.MaxBoardSize;
+
+        if (PersistentData.instance.BoardYSize > PersistentData.instance.MaxBoardSize)
+            PersistentData.instance.BoardYSize = PersistentData.instance.MinBoardSize;
+
+        GridYUI.text = PersistentData.instance.BoardYSize.ToString();
+    }
+
     private void Start ()
 	{
-	}
+        ChangeNumberOfPlayers(0);
+        ChangeGridXSize(0);
+        ChangeGridYSize(0);
+    }
 
 	public void StartGame()
     {
