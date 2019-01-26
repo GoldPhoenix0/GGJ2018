@@ -127,7 +127,7 @@ public class BoardManager : MonoBehaviour
         return isValid;
     }
 
-    public void PlacePiece(System.Action<BasePiece> onPiecePlaced = null)
+    public void PlacePiece(System.Action<BasePiece> onPiecePlaced = null, bool getNextPiece = true)
     {
         if (!CanPlaceCurrentPiece())
             return;
@@ -152,7 +152,9 @@ public class BoardManager : MonoBehaviour
 
         CurrentSelectedPiece = null;
         CurrentPieceRotation = BasePiece.RotationDirection.Normal;
-        UpdatePiece(0);
+
+        if(getNextPiece)
+            UpdatePiece(0);
     }
 
     public void CyclePiece(int dir)

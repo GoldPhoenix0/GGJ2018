@@ -97,14 +97,11 @@ public class BasePiece : MonoBehaviour
         InitHighlights();
         PiecePoints = CurrentHighlights != null ? CurrentHighlights.Length : 0;
 
-        if (ArtHolder != null)
-        {
-            Renderer[] renderers = ArtHolder.GetComponentsInChildren<Renderer>();
-            ArtItemMaterials = new Material[renderers.Length];
+        Renderer[] renderers = ArtHolder != null ? ArtHolder.GetComponentsInChildren<Renderer>() : new Renderer[0];
+        ArtItemMaterials = new Material[renderers.Length];
 
-            for (int i = 0; i < renderers.Length; i++)
-                ArtItemMaterials[i] = renderers[i].material;
-        }
+        for (int i = 0; i < renderers.Length; i++)
+            ArtItemMaterials[i] = renderers[i].material;
     }
 
     protected void InitHighlights()
