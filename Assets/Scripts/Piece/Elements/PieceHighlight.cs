@@ -51,15 +51,13 @@ public class PieceHighlight : MonoBehaviour
     public void HideHighlight()
     {
         ClearPulseAnimation();
-        thisMaterial.color = new Color32(255, 255, 255, 0);
+        thisMaterial.color = new Color32(0, 0, 0, 255);
     }
 
     public bool IsGridPositionValid()
     {
         Ray ray = new Ray(transform.position + Vector3.up, Vector3.down * 5);
         RaycastHit[] allHits = Physics.RaycastAll(ray);
-
-        
 
         FoundGridPosition = null;
 
@@ -82,6 +80,8 @@ public class PieceHighlight : MonoBehaviour
 
     private void Update()
     {
+    #if UNITY_EDITOR
         Debug.DrawRay(transform.position + Vector3.up, Vector3.down * 5);
+    #endif
     }
 }

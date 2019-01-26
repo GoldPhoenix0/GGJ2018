@@ -10,7 +10,7 @@ public class BoardManager : MonoBehaviour
     public Transform PieceHolder;
 
     public BasePiece CurrentSelectedPiece;
-    public BasePiece.RotationDirection checkRotation;
+    public BasePiece.RotationDirection CurrentPieceRotation;
     protected int LastPieceIndex = 0;
 
     public BoardGridLocation[,] BoardGridLocations { get; protected set; }
@@ -80,9 +80,13 @@ public class BoardManager : MonoBehaviour
         {
             ChangeRotation(1);
         }
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            PlacePiece();
+        }
+
 
         float mouseWheel = Input.GetAxis("Mouse ScrollWheel");
-        Debug.Log("wheel: " + mouseWheel);
 
         if(currentScrollWheelDuration <= 0f && Mathf.Abs(mouseWheel) > 0.01f)
         {
@@ -91,6 +95,54 @@ public class BoardManager : MonoBehaviour
         }
 
         currentScrollWheelDuration -= Time.deltaTime;
+    }
+
+    public bool CanPlaceCurrentPiece()
+    {
+        if (CurrentSelectedPiece == null)
+            return false;
+
+        bool isValid = true;
+
+        PieceHighlight[] highlightArray = CurrentSelectedPiece.CurrentHighlights;
+
+        for (int i = 0; i < highlightArray.Length; i++)
+        {
+            if(highlightArray[i] == null || !highlightArray[i].IsGridPositionValid() || highlightArray[i].FoundGridPosition == null)
+                isValid = false;
+        }
+
+        Debug.Log("Placing Piece valid? " + isValid);
+
+        return isValid;
+    }
+
+    public void PlacePiece(System.Action<BasePiece> onPiecePlaced = null)
+    {
+        if (!CanPlaceCurrentPiece())
+            return;
+
+        PieceHighlight[] highlightArray = CurrentSelectedPiece.CurrentHighlights;
+
+        for (int i = 0; i < highlightArray.Length; i++)
+        {
+            // we aren't valid... we should stop now!
+            if (highlightArray[i] == null)
+                return;
+
+            highlightArray[i].HideHighlight();
+
+            BoardGridLocation foundBoard = highlightArray[i].FoundGridPosition;
+
+            foundBoard.InUse = true;
+        }
+
+        if (onPiecePlaced != null)
+            onPiecePlaced(CurrentSelectedPiece);
+
+        CurrentSelectedPiece = null;
+        CurrentPieceRotation = BasePiece.RotationDirection.Normal;
+        UpdatePiece(0);
     }
 
     public void CyclePiece(int dir)
@@ -113,16 +165,16 @@ public class BoardManager : MonoBehaviour
 
         CurrentSelectedPiece = PieceHolder.InstantiateChild<BasePiece>(piece.gameObject);
         CurrentSelectedPiece.transform.localPosition = newPosition;
-        CurrentSelectedPiece.RotatePiece(checkRotation);
+        CurrentSelectedPiece.RotatePiece(CurrentPieceRotation);
     }
 
     public void ChangeRotation(int dir)
     {
-        int nextRotationIndex = ((int)checkRotation + dir + (int)BasePiece.RotationDirection.Count) % (int)BasePiece.RotationDirection.Count;
-        checkRotation = (BasePiece.RotationDirection)nextRotationIndex;
+        int nextRotationIndex = ((int)CurrentPieceRotation + dir + (int)BasePiece.RotationDirection.Count) % (int)BasePiece.RotationDirection.Count;
+        CurrentPieceRotation = (BasePiece.RotationDirection)nextRotationIndex;
 
         if (CurrentSelectedPiece != null)
-            CurrentSelectedPiece.RotatePiece(checkRotation);
+            CurrentSelectedPiece.RotatePiece(CurrentPieceRotation);
     }
 
     /// <summary>
@@ -131,42 +183,42 @@ public class BoardManager : MonoBehaviour
     /// <param name="x">X location of the Pivot Point</param>
     /// <param name="y">Y location of the Pivot Point</param>
     /// <param name="piece"></param>
-    public bool PlacePiece(int x, int y, BasePiece piece, BasePiece.RotationDirection rotationDir)
-    {
-        if (piece == null)
-            return false;
+    //public bool PlacePiece(int x, int y, BasePiece piece, BasePiece.RotationDirection rotationDir)
+    //{
+    //    if (piece == null)
+    //        return false;
 
-        BoardGridLocation selectedLocation = GetValidLocationAtPosition(x, y);
+    //    BoardGridLocation selectedLocation = GetValidLocationAtPosition(x, y);
 
-        if (selectedLocation == null)
-            return false;
+    //    if (selectedLocation == null)
+    //        return false;
 
-        List<Vector2Int> piecePositions = piece.GetRelativeLocationFromPoint(selectedLocation.X, selectedLocation.Y, rotationDir);
+    //    List<Vector2Int> piecePositions = piece.GetRelativeLocationFromPoint(selectedLocation.X, selectedLocation.Y, rotationDir);
 
-        bool isValid = true;
-        List<BoardGridLocation> foundBoardLocations = new List<BoardGridLocation>(piecePositions.Count);
+    //    bool isValid = true;
+    //    List<BoardGridLocation> foundBoardLocations = new List<BoardGridLocation>(piecePositions.Count);
 
-        for (int i = 0; i < piecePositions.Count; i++)
-        {
-            Vector2Int checkLocationPosition = piecePositions[i];
+    //    for (int i = 0; i < piecePositions.Count; i++)
+    //    {
+    //        Vector2Int checkLocationPosition = piecePositions[i];
 
-            BoardGridLocation checkLocation = GetLocationAtPosition(checkLocationPosition);
+    //        BoardGridLocation checkLocation = GetLocationAtPosition(checkLocationPosition);
 
-            if(checkLocation == null)
-            {
-                isValid = false;
-                continue;
-            }
+    //        if(checkLocation == null)
+    //        {
+    //            isValid = false;
+    //            continue;
+    //        }
 
-            if (checkLocation.InUse)
-                isValid = false;
+    //        if (checkLocation.InUse)
+    //            isValid = false;
 
-            foundBoardLocations.Add(checkLocation);
-        }
+    //        foundBoardLocations.Add(checkLocation);
+    //    }
 
 
-        return isValid;
-    }
+    //    return isValid;
+    //}
 
     public BoardGridLocation GetValidLocationAtPosition(Vector2Int checkPos)
     {
