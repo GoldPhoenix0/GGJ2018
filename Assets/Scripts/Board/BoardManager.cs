@@ -23,7 +23,7 @@ public class BoardManager : MonoBehaviour
 
     public IEnumerator InitAsync()
     {
-        GenerateBoard();
+        GenerateBoard(PersistentData.instance.BoardXSize, PersistentData.instance.BoardYSize);
 
         yield break;
     }
