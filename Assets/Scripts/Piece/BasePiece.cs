@@ -85,6 +85,7 @@ public class BasePiece : MonoBehaviour
     public PieceDimension PieceInfo;
     public RotationDirection CurrentRotation;
     public PieceHighlight[] CurrentHighlights { get; protected set; }
+    public int PiecePoints { get; protected set; }
     //protected Vector2Int[,] RelativeDirections;
 
     private void Awake()
@@ -93,18 +94,7 @@ public class BasePiece : MonoBehaviour
 
         InitHighlights();
 
-        //Debug.Log("Done");
-
-        //RelativeDirections = new Vector2Int[PieceDimensions.GetLength(0), PieceDimensions.GetLength(1)];
-
-        //// Calculate the Dimensions here
-        //for (int i = 0; i < PieceDimensions.GetLength(0); i++)
-        //{
-        //    for (int k = 0; k < PieceDimensions.GetLength(1); k++)
-        //    {
-        //        RelativeDirections[i, k] = new Vector2Int(i - PivotCoordinates.x, k - PivotCoordinates.y);
-        //    }
-        //}
+        PiecePoints = CurrentHighlights != null ? CurrentHighlights.Length : 0;
     }
 
     protected void InitHighlights()
@@ -163,12 +153,14 @@ public class BasePiece : MonoBehaviour
         UpdateHits();
     }
 
-    public void UpdateHits()
+    public void UpdateHits(bool shouldColor = true)
     {
         for (int i = 0; i < CurrentHighlights.Length; i++)
         {
             bool isValid = CurrentHighlights[i].IsGridPositionValid();
-            CurrentHighlights[i].EnableColor(isValid, true);
+
+            if(shouldColor)
+                CurrentHighlights[i].EnableColor(isValid, true);
         }
     }
 
@@ -263,22 +255,38 @@ public class BasePiece : MonoBehaviour
         return rotatedDirection;
     }
 
-    //public static bool[,] RotateMatrixCounterClockwise(bool[,] oldMatrix)
-    //{
-    //    bool[,] newMatrix = new bool[oldMatrix.GetLength(1), oldMatrix.GetLength(0)];
-    //    int newColumn, newRow = 0;
-    //    for (int oldColumn = oldMatrix.GetLength(1) - 1; oldColumn >= 0; oldColumn--)
-    //    {
-    //        newColumn = 0;
-    //        for (int oldRow = 0; oldRow < oldMatrix.GetLength(0); oldRow++)
-    //        {
-    //            newMatrix[newRow, newColumn] = oldMatrix[oldRow, oldColumn];
-    //            newColumn++;
-    //        }
-    //        newRow++;
-    //    }
-    //    return newMatrix;
-    //}
+    public bool DoesOtherPieceCollide(BasePiece otherPiece)
+    {
+        if (otherPiece == null || otherPiece.CurrentHighlights == null || otherPiece.CurrentHighlights.Length <= 0)
+            return false;
+
+        // Ensure we have the latest data for both pieces
+        otherPiece.UpdateHits(false);
+        UpdateHits(false);
+
+        List<BoardGridLocation> collidedLocations = new List<BoardGridLocation>();
+
+        for (int i = 0; i < CurrentHighlights.Length; i++)
+        {
+            PieceHighlight thisHighlight = CurrentHighlights[i];
+
+            if (thisHighlight == null)
+                continue;
+
+            for (int k = 0; k < otherPiece.CurrentHighlights.Length; k++)
+            {
+                PieceHighlight otherHighlight = otherPiece.CurrentHighlights[k];
+
+                if (thisHighlight.FoundGridPosition != null && thisHighlight.FoundGridPosition == otherHighlight.FoundGridPosition)
+                {
+                    collidedLocations.Add(thisHighlight.FoundGridPosition);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     void OnDrawGizmosSelected()
     {
