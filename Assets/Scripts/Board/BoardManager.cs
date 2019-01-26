@@ -93,7 +93,7 @@ public class BoardManager : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            PlacePiece();
+            PlacePiece(CurrentSelectedPiece);
         }
 
 
@@ -110,12 +110,17 @@ public class BoardManager : MonoBehaviour
 
     public bool CanPlaceCurrentPiece()
     {
-        if (CurrentSelectedPiece == null)
+        return CanPlacePiece(CurrentSelectedPiece);
+    }
+
+    public bool CanPlacePiece(BasePiece checkPiece)
+    {
+        if (checkPiece == null)
             return false;
 
         bool isValid = true;
 
-        PieceHighlight[] highlightArray = CurrentSelectedPiece.CurrentHighlights;
+        PieceHighlight[] highlightArray = checkPiece.CurrentHighlights;
 
         for (int i = 0; i < highlightArray.Length; i++)
         {
@@ -128,9 +133,9 @@ public class BoardManager : MonoBehaviour
         return isValid;
     }
 
-    public void PlacePiece(BasePiece checkPiece = null)
+    public void PlacePiece(BasePiece checkPiece)
     {
-        if (!CanPlaceCurrentPiece())
+        if (!CanPlacePiece(checkPiece))
             return;
 
         PieceHighlight[] highlightArray = checkPiece.CurrentHighlights;
@@ -147,8 +152,6 @@ public class BoardManager : MonoBehaviour
 
             foundBoard.InUse = true;
         }
-
-        
     }
 
     public void GetNextPiece()
