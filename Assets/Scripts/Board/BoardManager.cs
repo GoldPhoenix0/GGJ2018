@@ -9,10 +9,14 @@ public class BoardManager : MonoBehaviour
     public Transform BoardGridHolder;
     public Transform PieceHolder;
 
-    public BasePiece tempPiece;
+    public BasePiece CurrentSelectedPiece;
     public BasePiece.RotationDirection checkRotation;
+    protected int LastPieceIndex = 0;
 
     public BoardGridLocation[,] BoardGridLocations { get; protected set; }
+
+    protected float timeBeforeScrollWheel = 0.25f;
+    protected float currentScrollWheelDuration = 0f;
 
     private void Start()
     {
@@ -28,7 +32,7 @@ public class BoardManager : MonoBehaviour
     {
         GenerateBoard(PersistentData.instance.BoardXSize, PersistentData.instance.BoardYSize);
 
-        tempPiece = PieceHolder.InstantiateChild<BasePiece>(PiecePrefabs[0].gameObject);
+        UpdatePiece(0);
 
         yield break;
     }
@@ -68,14 +72,48 @@ public class BoardManager : MonoBehaviour
 
                 //Debug.Log("hit object at " + hoveredTransform.X + "," + hoveredTransform.Y);
 
-                tempPiece.transform.localPosition = hoveredTransform.transform.localPosition;
-                tempPiece.UpdateHits();
+                CurrentSelectedPiece.transform.localPosition = hoveredTransform.transform.localPosition;
+                CurrentSelectedPiece.UpdateHits();
             }
         }
         if(Input.GetMouseButtonDown(1))
         {
             ChangeRotation(1);
         }
+
+        float mouseWheel = Input.GetAxis("Mouse ScrollWheel");
+        Debug.Log("wheel: " + mouseWheel);
+
+        if(currentScrollWheelDuration <= 0f && Mathf.Abs(mouseWheel) > 0.01f)
+        {
+            CyclePiece((int)Mathf.Sign(mouseWheel));
+            currentScrollWheelDuration = timeBeforeScrollWheel;
+        }
+
+        currentScrollWheelDuration -= Time.deltaTime;
+    }
+
+    public void CyclePiece(int dir)
+    {
+        UpdatePiece(LastPieceIndex + dir);
+    }
+
+    public void UpdatePiece(int index)
+    {
+        LastPieceIndex = (PiecePrefabs.Length + index) % PiecePrefabs.Length;
+
+        BasePiece piece = PiecePrefabs[LastPieceIndex];
+
+        Vector3 newPosition = Vector3.zero;
+        if (CurrentSelectedPiece != null)
+        {
+            newPosition = CurrentSelectedPiece.transform.localPosition;
+            Destroy(CurrentSelectedPiece.gameObject);
+        }
+
+        CurrentSelectedPiece = PieceHolder.InstantiateChild<BasePiece>(piece.gameObject);
+        CurrentSelectedPiece.transform.localPosition = newPosition;
+        CurrentSelectedPiece.RotatePiece(checkRotation);
     }
 
     public void ChangeRotation(int dir)
@@ -83,8 +121,8 @@ public class BoardManager : MonoBehaviour
         int nextRotationIndex = ((int)checkRotation + dir + (int)BasePiece.RotationDirection.Count) % (int)BasePiece.RotationDirection.Count;
         checkRotation = (BasePiece.RotationDirection)nextRotationIndex;
 
-        if (tempPiece != null)
-            tempPiece.RotatePiece(checkRotation);
+        if (CurrentSelectedPiece != null)
+            CurrentSelectedPiece.RotatePiece(checkRotation);
     }
 
     /// <summary>

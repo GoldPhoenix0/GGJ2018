@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4442672337924070}
   - component: {fileID: 114783724706833228}
   m_Layer: 0
-  m_Name: PieceTV
+  m_Name: PieceCouch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,8 +85,8 @@ MonoBehaviour:
   PieceHighlightHolder: {fileID: 4768323051759298}
   PieceInfo:
     Columns:
-    - RowBools: 01
-    - RowBools: 01
-    - RowBools: 01
-    PivotPoint: {x: 0, y: 0}
+    - RowBools: 0101
+    - RowBools: 0101
+    - RowBools: 0101
+    PivotPoint: {x: 0, y: 1}
   CurrentRotation: 0

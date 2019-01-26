@@ -175,11 +175,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PiecePrefabs:
   - {fileID: 114783724706833228, guid: d41ed57f87b8a874981cfa70151290c5, type: 2}
+  - {fileID: 114783724706833228, guid: efac411e56408074198904ddee58a848, type: 2}
   BoardGridLocationPrefab: {fileID: 114904130037546426, guid: 769ec3dd8d6237e40976eb66876d6ff5,
     type: 2}
   BoardGridHolder: {fileID: 1933472996}
   PieceHolder: {fileID: 316983865}
-  tempPiece: {fileID: 0}
+  CurrentSelectedPiece: {fileID: 0}
   checkRotation: 0
 --- !u!4 &356117908
 Transform:
