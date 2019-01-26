@@ -177,49 +177,6 @@ public class BoardManager : MonoBehaviour
             CurrentSelectedPiece.RotatePiece(CurrentPieceRotation);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="x">X location of the Pivot Point</param>
-    /// <param name="y">Y location of the Pivot Point</param>
-    /// <param name="piece"></param>
-    //public bool PlacePiece(int x, int y, BasePiece piece, BasePiece.RotationDirection rotationDir)
-    //{
-    //    if (piece == null)
-    //        return false;
-
-    //    BoardGridLocation selectedLocation = GetValidLocationAtPosition(x, y);
-
-    //    if (selectedLocation == null)
-    //        return false;
-
-    //    List<Vector2Int> piecePositions = piece.GetRelativeLocationFromPoint(selectedLocation.X, selectedLocation.Y, rotationDir);
-
-    //    bool isValid = true;
-    //    List<BoardGridLocation> foundBoardLocations = new List<BoardGridLocation>(piecePositions.Count);
-
-    //    for (int i = 0; i < piecePositions.Count; i++)
-    //    {
-    //        Vector2Int checkLocationPosition = piecePositions[i];
-
-    //        BoardGridLocation checkLocation = GetLocationAtPosition(checkLocationPosition);
-
-    //        if(checkLocation == null)
-    //        {
-    //            isValid = false;
-    //            continue;
-    //        }
-
-    //        if (checkLocation.InUse)
-    //            isValid = false;
-
-    //        foundBoardLocations.Add(checkLocation);
-    //    }
-
-
-    //    return isValid;
-    //}
-
     public BoardGridLocation GetValidLocationAtPosition(Vector2Int checkPos)
     {
         return GetValidLocationAtPosition(checkPos.x, checkPos.y);
@@ -247,5 +204,26 @@ public class BoardManager : MonoBehaviour
             return null;
 
         return BoardGridLocations[x, y];
+    }
+
+    public bool IsGameOver()
+    {
+        int numPlayers = PersistentData.instance.NumberOfPlayers;
+
+        int numTilesRemaining = 0;
+        for (int x = 0; x < BoardGridLocations.GetLength(0); x++)
+        {
+            for (int y = 0; y < BoardGridLocations.GetLength(1); y++)
+            {
+                BoardGridLocation checkLocation = BoardGridLocations[x, y];
+
+                if (checkLocation == null || checkLocation.InUse)
+                    continue;
+
+                numTilesRemaining++;
+            }
+        }
+
+        return numTilesRemaining < numPlayers;
     }
 }
