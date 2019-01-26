@@ -76,6 +76,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerScoreLabel: {fileID: 114634045352153710}
   playerScoreField: {fileID: 114374560767458754}
+  ScoreBackground: {fileID: 114441198993807180}
+  SelectedBackGround: {fileID: 21300000, guid: d4e664b8df2e32e43b69b8f2041d01b6, type: 3}
+  DefaultSprite: {fileID: 0}
 --- !u!114 &114374560767458754
 MonoBehaviour:
   m_ObjectHideFlags: 1
