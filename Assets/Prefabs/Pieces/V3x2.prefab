@@ -88,8 +88,8 @@ MonoBehaviour:
   PlacementAudio: {fileID: 8300000, guid: 226e2765692e45044a10e833713c59bf, type: 3}
   PieceInfo:
     Columns:
-    - RowBools: 0100
-    - RowBools: 0100
     - RowBools: 0001
+    - RowBools: 0001
+    - RowBools: 0100
     PivotPoint: {x: 0, y: 1}
   CurrentRotation: 0
