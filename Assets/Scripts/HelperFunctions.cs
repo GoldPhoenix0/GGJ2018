@@ -32,6 +32,7 @@ public static class HelperFunctions
         int numLoops = 0;
         float currentTime = 0f;
         float startTargetAlpha = startColor.a;
+        float currentStartAlpha = startTargetAlpha;
         float currentTargetAlpha = targetAlpha;
         while (material != null)
         {
@@ -47,14 +48,23 @@ public static class HelperFunctions
 
                 currentTime = 0f;
 
-                currentTargetAlpha = Mathf.Approximately(currentTargetAlpha, targetAlpha) ? startTargetAlpha : targetAlpha;
+                bool isApproxEqual = Mathf.Approximately(currentTargetAlpha, targetAlpha);
+
+                currentTargetAlpha = isApproxEqual ? startTargetAlpha : targetAlpha;
+                currentStartAlpha = isApproxEqual ? targetAlpha : startTargetAlpha;
+
             }
 
             Color color = material.color;
-            color.a = Mathf.Lerp(color.a, currentTargetAlpha, currentTime / duration); //Mathf.Lerp(color.a, currentTargetAlpha, Easings.Interpolate(currentTime / duration, Easings.Functions.SineEaseInOut)); //Mathf.SmoothStep(color.a, currentTargetAlpha, currentTime / duration);
+            color.a = Mathf.Lerp(currentStartAlpha, currentTargetAlpha, currentTime / duration); //Mathf.Lerp(color.a, currentTargetAlpha, Easings.Interpolate(currentTime / duration, Easings.Functions.SineEaseInOut)); //Mathf.SmoothStep(color.a, currentTargetAlpha, currentTime / duration);
             material.color = color;
         }
 
         material.color = startColor;
+    }
+
+    public static float GetValueBetween2Numbers(float current, float min, float max)
+    {
+        return (current - min) / (max - min);
     }
 }

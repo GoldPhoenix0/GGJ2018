@@ -50,6 +50,7 @@ public class StateManager : MonoBehaviour {
         CurrentPlayer = startPlayer;
 
         BoardManager.instance.GetNextPiece();
+        BoardManager.instance.UpdatePlayerColor(CurrentPlayer);
 
         currentState = gameState.PlayerXPlace;
 
@@ -84,6 +85,7 @@ public class StateManager : MonoBehaviour {
         else // Next players turn
         {
             currentState = gameState.PlayerXPlace;
+            BoardManager.instance.UpdatePlayerColor(CurrentPlayer);
             BoardManager.instance.UpdatePiece(0);
         }
 

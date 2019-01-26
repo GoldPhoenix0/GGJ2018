@@ -21,6 +21,8 @@ public class BoardManager : MonoBehaviour
     public AudioClip SelectLocationAudioClip;
 
     public BoardGridLocation[,] BoardGridLocations { get; protected set; }
+    public Color CurrentPlayerColor { get; set; }
+
 
     protected float timeBeforeScrollWheel = 0.25f;
     protected float currentScrollWheelDuration = 0f;
@@ -32,10 +34,7 @@ public class BoardManager : MonoBehaviour
             Destroy(instance.gameObject);
 
         instance = this;
-    }
 
-    private void Start()
-    {
         Init();
     }
 
@@ -47,6 +46,8 @@ public class BoardManager : MonoBehaviour
     public IEnumerator InitAsync()
     {
         GenerateBoard(PersistentData.instance.BoardXSize, PersistentData.instance.BoardYSize);
+        CurrentPlayerColor = PersistentData.instance.PlayerColors[0];
+
         yield break;
     }
 	
@@ -82,22 +83,28 @@ public class BoardManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                BoardGridLocation hoveredTransform = hit.transform.GetComponent<BoardGridLocation>();
+                BoardGridLocation hitGridLocation = hit.transform.GetComponent<BoardGridLocation>();
 
-                if (hoveredTransform == null)
+                if (hitGridLocation == null)
                     return;
 
                 //Debug.Log("hit object at " + hoveredTransform.X + "," + hoveredTransform.Y);
 
-                CurrentSelectedPiece.transform.localPosition = hoveredTransform.transform.localPosition;
-                CurrentSelectedPiece.UpdateHits();
+                if (hitGridLocation != previousTouchedBoardGrid)
+                {
+                    CurrentSelectedPiece.transform.localPosition = hitGridLocation.transform.localPosition;
+                    CurrentSelectedPiece.UpdateHits();
 
-                if(hoveredTransform != previousTouchedBoardGrid)
                     SFXManager.instance.PlayAudioClip(SelectLocationAudioClip);
-
-                previousTouchedBoardGrid = hoveredTransform;
+                }
+                previousTouchedBoardGrid = hitGridLocation;
             }
         }
+        else if(Input.GetMouseButtonUp(0))
+        {
+            previousTouchedBoardGrid = null;
+        }
+
         if(Input.GetMouseButtonDown(1))
         {
             ChangeRotation(1);
@@ -171,6 +178,11 @@ public class BoardManager : MonoBehaviour
         CurrentPieceRotation = BasePiece.RotationDirection.Normal;
 
         UpdatePiece(0);
+    }
+
+    public void UpdatePlayerColor(int playerIndex)
+    {
+        CurrentPlayerColor = PersistentData.instance.PlayerColors[playerIndex];
     }
 
     public void CyclePiece(int dir)

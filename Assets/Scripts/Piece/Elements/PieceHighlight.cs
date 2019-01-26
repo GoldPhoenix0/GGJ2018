@@ -6,7 +6,7 @@ public class PieceHighlight : MonoBehaviour
 {
     protected Material thisMaterial;
 
-    public Color ValidColor;
+    //public Color ValidColor;
     public Color InvalidColor;
 
     private int _x;
@@ -28,8 +28,9 @@ public class PieceHighlight : MonoBehaviour
 
     public void EnableColor(bool isValid, bool pulseColor = false)
     {
-        Color chosenColor = isValid ? ValidColor : InvalidColor;
-        EnableColor(chosenColor);
+        Color currentPlayerColor = BoardManager.instance.CurrentPlayerColor;
+        Color chosenColor = isValid ? currentPlayerColor : InvalidColor;
+        EnableColor(chosenColor, pulseColor);
     }
 
     public void EnableColor(Color chosenColor, bool pulseColor = false)
@@ -39,7 +40,7 @@ public class PieceHighlight : MonoBehaviour
         if (pulseColor)
         {
             ClearPulseAnimation();
-            IsAnimatingColorCoroutine = StartCoroutine(thisMaterial.PulseAlpha(chosenColor, 0.5f, loop: pulseColor));
+            IsAnimatingColorCoroutine = StartCoroutine(thisMaterial.PulseAlpha(chosenColor, 0.5f, 1f, loop: pulseColor));
         }
     }
 
