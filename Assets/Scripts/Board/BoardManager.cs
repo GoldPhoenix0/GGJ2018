@@ -69,6 +69,10 @@ public class BoardManager : MonoBehaviour
 
     private void Update()
     {
+        // Do nothing while we don't have a piece
+        if (CurrentSelectedPiece == null)
+            return;
+
         if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
