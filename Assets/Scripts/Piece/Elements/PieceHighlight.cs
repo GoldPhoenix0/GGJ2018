@@ -40,7 +40,7 @@ public class PieceHighlight : MonoBehaviour
         if (pulseColor)
         {
             ClearPulseAnimation();
-            IsAnimatingColorCoroutine = StartCoroutine(thisMaterial.PulseAlpha(chosenColor, 0.5f, 1f, loop: pulseColor));
+            IsAnimatingColorCoroutine = StartCoroutine(thisMaterial.PulseAlpha(chosenColor, 0.65f, 1f, loop: pulseColor));
         }
     }
 
@@ -56,7 +56,9 @@ public class PieceHighlight : MonoBehaviour
     public void HideHighlight()
     {
         ClearPulseAnimation();
-        thisMaterial.color = new Color32(0, 0, 0, 255);
+        Color newColor = thisMaterial.color;
+        newColor.a = 0.5f;
+        thisMaterial.color = newColor;
     }
 
     public bool IsGridPositionValid()
