@@ -559,7 +559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a2c6a34edba6447b93c6026a85f926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameSceneName: pja
+  GameSceneName: GameScene
   NumberOfPlayersUI: {fileID: 1104885542}
 --- !u!4 &852794368
 Transform:
