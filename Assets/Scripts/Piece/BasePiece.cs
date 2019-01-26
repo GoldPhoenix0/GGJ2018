@@ -85,6 +85,8 @@ public class BasePiece : MonoBehaviour
     public Transform ArtHolder;
     public Material[] ArtItemMaterials;
 
+    public AudioClip PlacementAudio;
+
     public PieceDimension PieceInfo;
     public RotationDirection CurrentRotation;
     public PieceHighlight[] CurrentHighlights { get; protected set; }

@@ -86,6 +86,7 @@ public class StateManager : MonoBehaviour {
         currentState = gameState.PlayerXFinish;
 
         // TODO Get the BasePiece to handle how it hides itself incase just making the whole game object inactive screws with accessing data on it.
+        BoardManager.instance.PlayUnknownAudioOnPiece(BoardManager.instance.CurrentSelectedPiece);
         BoardManager.instance.CurrentSelectedPiece = null;
         PlayerPlacements[CurrentPlayer].gameObject.SetActive(false);
 
@@ -167,7 +168,14 @@ public class StateManager : MonoBehaviour {
                 if(PieceCollides[CurrentPlayer])
                 {
                     // Play collision sound!
+                    BoardManager.instance.OnItemsCrashed(PlayerPlacements[CurrentPlayer]);
                 }
+                else
+                {
+                    // Possible Particles here as well
+                    SFXManager.instance.PlayAudioClip(PlayerPlacements[CurrentPlayer].PlacementAudio);
+                }
+
                 AdvanceCurrentPlayer();
 
                 if(CurrentPlayer == startPlayer)

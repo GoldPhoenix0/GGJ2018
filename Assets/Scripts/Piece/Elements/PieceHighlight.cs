@@ -29,16 +29,20 @@ public class PieceHighlight : MonoBehaviour
     public void EnableColor(bool isValid, bool pulseColor = false)
     {
         Color chosenColor = isValid ? ValidColor : InvalidColor;
+        EnableColor(chosenColor);
+    }
 
+    public void EnableColor(Color chosenColor, bool pulseColor = false)
+    {
         thisMaterial.color = chosenColor;
 
         if (pulseColor)
         {
             ClearPulseAnimation();
-            IsAnimatingColorCoroutine = StartCoroutine(thisMaterial.PulseAlpha(chosenColor, 0.5f, loop:pulseColor));
+            IsAnimatingColorCoroutine = StartCoroutine(thisMaterial.PulseAlpha(chosenColor, 0.5f, loop: pulseColor));
         }
     }
-	
+
     public void ClearPulseAnimation()
     {
         if(IsAnimatingColorCoroutine != null)

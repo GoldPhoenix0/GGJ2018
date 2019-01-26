@@ -314,6 +314,14 @@ MonoBehaviour:
   PieceHolder: {fileID: 316983865}
   CurrentSelectedPiece: {fileID: 0}
   CurrentPieceRotation: 0
+  UnknownPlacementAudioClips:
+  - {fileID: 8300000, guid: a382997770797144b9c70197ab34df3e, type: 3}
+  - {fileID: 8300000, guid: 07a497ab9652e7542aed3cf5301e4aeb, type: 3}
+  - {fileID: 8300000, guid: c96a905d8d04ffd4e821de6203f46b02, type: 3}
+  CrashAudioClip: {fileID: 8300000, guid: ad2cef2c606092c42a0bf035c03c7f47, type: 3}
+  RotateAudioClip: {fileID: 8300000, guid: 5cac95dbd344e554db2e68d1c6320d2b, type: 3}
+  SelectLocationAudioClip: {fileID: 8300000, guid: 5ba02510e398cf448b29a6cefa99ae98,
+    type: 3}
 --- !u!4 &356117908
 Transform:
   m_ObjectHideFlags: 0

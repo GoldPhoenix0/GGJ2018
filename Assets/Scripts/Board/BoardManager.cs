@@ -15,10 +15,16 @@ public class BoardManager : MonoBehaviour
     public BasePiece.RotationDirection CurrentPieceRotation;
     protected int LastPieceIndex = 0;
 
+    public AudioClip[] UnknownPlacementAudioClips;
+    public AudioClip CrashAudioClip;
+    public AudioClip RotateAudioClip;
+    public AudioClip SelectLocationAudioClip;
+
     public BoardGridLocation[,] BoardGridLocations { get; protected set; }
 
     protected float timeBeforeScrollWheel = 0.25f;
     protected float currentScrollWheelDuration = 0f;
+    protected BoardGridLocation previousTouchedBoardGrid;
 
     private void Awake()
     {
@@ -85,6 +91,11 @@ public class BoardManager : MonoBehaviour
 
                 CurrentSelectedPiece.transform.localPosition = hoveredTransform.transform.localPosition;
                 CurrentSelectedPiece.UpdateHits();
+
+                if(hoveredTransform != previousTouchedBoardGrid)
+                    SFXManager.instance.PlayAudioClip(SelectLocationAudioClip);
+
+                previousTouchedBoardGrid = hoveredTransform;
             }
         }
         if(Input.GetMouseButtonDown(1))
@@ -149,6 +160,8 @@ public class BoardManager : MonoBehaviour
             BoardGridLocation foundBoard = highlightArray[i].FoundGridPosition;
 
             foundBoard.InUse = true;
+
+            //SFXManager.instance.PlayAudioClip(checkPiece.PlacementAudio);
         }
     }
 
@@ -189,7 +202,10 @@ public class BoardManager : MonoBehaviour
         CurrentPieceRotation = (BasePiece.RotationDirection)nextRotationIndex;
 
         if (CurrentSelectedPiece != null)
+        {
             CurrentSelectedPiece.RotatePiece(CurrentPieceRotation);
+            SFXManager.instance.PlayAudioClip(RotateAudioClip);
+        }
     }
 
     public BoardGridLocation GetValidLocationAtPosition(Vector2Int checkPos)
@@ -240,5 +256,39 @@ public class BoardManager : MonoBehaviour
         }
 
         return numTilesRemaining < numPlayers;
+    }
+
+    public void OnItemsCrashed(BasePiece pieceCrashed)
+    {
+        SFXManager.instance.PlayAudioClip(CrashAudioClip);
+
+        if (pieceCrashed == null)
+            return;
+
+        //Play particles here
+    }
+
+    public void PlayUnknownAudioOnPiece(BasePiece piece)
+    {
+        if (piece == null)
+            return;
+
+        int pointSize = piece.PiecePoints;
+
+        if (pointSize >= 6)
+            PlayUnknownAudio(3);
+        else if (pointSize >= 3)
+            PlayUnknownAudio(1);
+        else
+            PlayUnknownAudio(0);
+    }
+
+    public void PlayUnknownAudio(int sizeIndex)
+    {
+        if (UnknownPlacementAudioClips == null)
+            return;
+
+        sizeIndex = Mathf.Clamp(sizeIndex, 0, UnknownPlacementAudioClips.Length - 1);
+        SFXManager.instance.PlayAudioClip(UnknownPlacementAudioClips[sizeIndex]);
     }
 }

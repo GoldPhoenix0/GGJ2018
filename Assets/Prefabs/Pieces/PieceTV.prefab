@@ -83,6 +83,9 @@ MonoBehaviour:
   PieceHighlightPrefab: {fileID: 114549255558145632, guid: 18975fd36c103c84287e44f3af0d6052,
     type: 2}
   PieceHighlightHolder: {fileID: 4768323051759298}
+  ArtHolder: {fileID: 0}
+  ArtItemMaterials: []
+  PlacementAudio: {fileID: 8300000, guid: 295d01da8c66f8742ba2c7ac669db57e, type: 3}
   PieceInfo:
     Columns:
     - RowBools: 01
