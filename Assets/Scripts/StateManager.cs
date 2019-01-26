@@ -153,6 +153,7 @@ public class StateManager : MonoBehaviour {
     private void RevealPlacedPiece()
     {
         PlayerPlacements[CurrentPlayer].gameObject.SetActive(true);
+
     }
 
     private void AdvanceCurrentPlayer()

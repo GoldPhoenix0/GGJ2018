@@ -108,10 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 471aabba0e0ed1b4588fccb63ccc5747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _x: 0
-  _y: 0
   ThisRenderer: {fileID: 23974069449653682}
   Collider: {fileID: 65482650674498616}
   PossibleMaterials:
-  - {fileID: 2100000, guid: 1e2c0f542d807fc44ba732c3ad5489ab, type: 2}
-  - {fileID: 2100000, guid: caebaa248c072bb478ea344946f84aca, type: 2}
+  - {fileID: 2100000, guid: 7a5b914e4d0404546bc4fd144545dff0, type: 2}
