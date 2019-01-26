@@ -184,9 +184,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NumberOfPlayers: 2
-  MaxNumberOfPlayers: 7
+  MaxNumberOfPlayers: 8
   BoardXSize: 5
   BoardYSize: 10
+  MinBoardSize: 5
+  MaxBoardSize: 20
   PlayerColors:
   - serializedVersion: 2
     rgba: 4283111910
