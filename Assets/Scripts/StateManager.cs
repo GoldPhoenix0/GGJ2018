@@ -21,7 +21,7 @@ public class StateManager : MonoBehaviour {
     [SerializeField]
     private float ScoringSpeed = 1.0f;
 
-    private float RestartGameDelay = 5.0f;
+    //private float RestartGameDelay = 5.0f;
 
     public gameState currentState = gameState.Init;
     private int startPlayer = 0;
@@ -89,7 +89,8 @@ public class StateManager : MonoBehaviour {
         {
             currentState = gameState.PlayerXPlace;
             BoardManager.instance.UpdatePlayerColor(CurrentPlayer);
-            BoardManager.instance.UpdatePiece(0);
+            BoardManager.instance.GetNextPiece();
+            //BoardManager.instance.UpdatePiece(0);
         }
 
     }

@@ -90,14 +90,7 @@ public class BoardManager : MonoBehaviour
 
                 //Debug.Log("hit object at " + hoveredTransform.X + "," + hoveredTransform.Y);
 
-                if (hitGridLocation != previousTouchedBoardGrid)
-                {
-                    CurrentSelectedPiece.transform.localPosition = hitGridLocation.transform.localPosition;
-                    CurrentSelectedPiece.UpdateHits();
-
-                    SFXManager.instance.PlayAudioClip(SelectLocationAudioClip);
-                }
-                previousTouchedBoardGrid = hitGridLocation;
+                MoveCurrentPieceToBoardLocation(hitGridLocation);
             }
         }
         else if(Input.GetMouseButtonUp(0))
@@ -125,6 +118,21 @@ public class BoardManager : MonoBehaviour
         }
 
         currentScrollWheelDuration -= Time.deltaTime;
+    }
+
+    public void MoveCurrentPieceToBoardLocation(BoardGridLocation newLocation)
+    {
+        if (newLocation == null || newLocation == previousTouchedBoardGrid)
+            return;
+
+        if (newLocation != previousTouchedBoardGrid)
+        {
+            CurrentSelectedPiece.transform.localPosition = newLocation.transform.localPosition;
+            CurrentSelectedPiece.UpdateHits();
+
+            SFXManager.instance.PlayAudioClip(SelectLocationAudioClip);
+        }
+        previousTouchedBoardGrid = newLocation;
     }
 
     public bool CanPlaceCurrentPiece()
@@ -176,9 +184,81 @@ public class BoardManager : MonoBehaviour
     public void GetNextPiece()
     {
         CurrentSelectedPiece = null;
-        CurrentPieceRotation = BasePiece.RotationDirection.Normal;
+        CurrentPieceRotation = (BasePiece.RotationDirection)Random.Range(0, (int)BasePiece.RotationDirection.Count); //BasePiece.RotationDirection.Normal;
 
-        UpdatePiece(0);
+        List<BoardGridLocation> availableLocations = new List<BoardGridLocation>();
+
+        int xLength = BoardGridLocations.GetLength(0);
+        int yLength = BoardGridLocations.GetLength(1);
+
+        for (int x = 0; x < xLength; x++)
+        {
+            for (int y = 0; y < yLength; y++)
+            {
+                BoardGridLocation checkLocation = BoardGridLocations[x, y];
+
+                if (checkLocation == null || checkLocation.InUse)
+                    continue;
+
+                availableLocations.Add(checkLocation);
+            }
+        }
+
+        int targetCategory = 0;
+        int totalTiles = xLength * yLength;
+        int availableTiles = availableLocations.Count;
+
+        if (availableTiles > ((float)totalTiles * 0.8f))
+            targetCategory = 2;
+        else if (availableTiles > (float)(totalTiles * 0.5f))
+            targetCategory = 1;
+        else
+            targetCategory = 0;
+
+
+        List<int> checkPieces = GetPieceIndexesForCategory(targetCategory);
+        int pieceIndex = 0;
+
+        if (checkPieces != null && checkPieces.Count > 0)
+            pieceIndex = checkPieces[Random.Range(0, checkPieces.Count)];
+
+        UpdatePiece(pieceIndex);
+
+        if (availableLocations.Count > 0)
+        {
+            BoardGridLocation randomStartingPlace = availableLocations[Random.Range(0, availableLocations.Count)];
+            MoveCurrentPieceToBoardLocation(randomStartingPlace);
+        }
+    }
+
+    public List<BasePiece> GetPiecesForCategory(int targetCategory)
+    {
+        List<BasePiece> checkPieces = new List<BasePiece>();
+
+        for (int i = 0; i < PiecePrefabs.Length; i++)
+        {
+            int thisScale = GetSizeScaleForPiece(PiecePrefabs[i]);
+
+            if (thisScale == targetCategory)
+                checkPieces.Add(PiecePrefabs[i]);
+        }
+
+        return checkPieces;
+    }
+
+    public List<int> GetPieceIndexesForCategory(int targetCategory)
+    {
+        List<int> checkPieces = new List<int>();
+
+        for (int i = 0; i < PiecePrefabs.Length; i++)
+        {
+            int thisScale = GetSizeScaleForPiece(PiecePrefabs[i]);
+
+            if (thisScale == targetCategory)
+                checkPieces.Add(i);
+        }
+
+        return checkPieces;
     }
 
     public void UpdatePlayerColor(int playerIndex)
@@ -286,14 +366,33 @@ public class BoardManager : MonoBehaviour
         if (piece == null)
             return;
 
-        int pointSize = piece.PiecePoints;
+        int audioIndex = GetSizeScaleForPiece(piece);
+
+        PlayUnknownAudio(audioIndex);
+
+        //int pointSize = piece.PiecePoints;
+
+        //if (pointSize >= 6)
+        //    PlayUnknownAudio(3);
+        //else if (pointSize >= 3)
+        //    PlayUnknownAudio(1);
+        //else
+        //    PlayUnknownAudio(0);
+    }
+
+    protected int GetSizeScaleForPiece(BasePiece piece)
+    {
+        if (piece == null)
+            return 0;
+
+        int pointSize = piece.GetPointValue();
 
         if (pointSize >= 6)
-            PlayUnknownAudio(3);
+            return 2;
         else if (pointSize >= 3)
-            PlayUnknownAudio(1);
+            return 1;
         else
-            PlayUnknownAudio(0);
+            return 0;
     }
 
     public void PlayUnknownAudio(int sizeIndex)

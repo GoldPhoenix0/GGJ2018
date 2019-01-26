@@ -106,6 +106,38 @@ public class BasePiece : MonoBehaviour
             ArtItemMaterials[i] = renderers[i].material;
     }
 
+    public int GetPointValue()
+    {
+        if (PiecePoints > 0)
+            return PiecePoints;
+
+        if (PieceInfo.Columns == null)
+            return 0;
+
+        int currentPoints = 0;
+
+        PieceDimension.Row[] columns = PieceInfo.Columns;
+
+        for (int i = 0; i < columns.Length; i++)
+        {
+            if (columns[i] == null)
+                continue;
+
+            bool[] rows = columns[i].RowBools;
+
+            if (rows == null)
+                continue;
+
+            for (int k = 0; k < rows.Length; k++)
+            {
+                if (rows[k])
+                    currentPoints++;
+            }
+        }
+
+        return currentPoints;
+    }
+
     protected void InitHighlights()
     {
         PieceDimension.Row[] columns = PieceInfo.Columns;
