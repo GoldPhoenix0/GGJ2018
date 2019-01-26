@@ -131,12 +131,12 @@ public class BoardManager : MonoBehaviour
         return isValid;
     }
 
-    public void PlacePiece(System.Action<BasePiece> onPiecePlaced = null, bool getNextPiece = true)
+    public void PlacePiece(BasePiece checkPiece = null)
     {
         if (!CanPlaceCurrentPiece())
             return;
 
-        PieceHighlight[] highlightArray = CurrentSelectedPiece.CurrentHighlights;
+        PieceHighlight[] highlightArray = checkPiece.CurrentHighlights;
 
         for (int i = 0; i < highlightArray.Length; i++)
         {
@@ -151,14 +151,15 @@ public class BoardManager : MonoBehaviour
             foundBoard.InUse = true;
         }
 
-        if (onPiecePlaced != null)
-            onPiecePlaced(CurrentSelectedPiece);
+        
+    }
 
+    public void GetNextPiece()
+    {
         CurrentSelectedPiece = null;
         CurrentPieceRotation = BasePiece.RotationDirection.Normal;
 
-        if(getNextPiece)
-            UpdatePiece(0);
+        UpdatePiece(0);
     }
 
     public void CyclePiece(int dir)
