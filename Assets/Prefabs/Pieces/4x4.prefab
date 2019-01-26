@@ -92,5 +92,5 @@ MonoBehaviour:
     - RowBools: 01010101
     - RowBools: 01010101
     - RowBools: 01010101
-    PivotPoint: {x: 0, y: 1}
+    PivotPoint: {x: 1, y: 1}
   CurrentRotation: 0
