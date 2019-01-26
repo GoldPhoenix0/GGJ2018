@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    public static BoardManager instance;
+
     public BasePiece[] PiecePrefabs;
     public BoardGridLocation BoardGridLocationPrefab;
     public Transform BoardGridHolder;
@@ -17,6 +19,14 @@ public class BoardManager : MonoBehaviour
 
     protected float timeBeforeScrollWheel = 0.25f;
     protected float currentScrollWheelDuration = 0f;
+
+    private void Awake()
+    {
+        if (instance != null)
+            Destroy(instance.gameObject);
+
+        instance = this;
+    }
 
     private void Start()
     {

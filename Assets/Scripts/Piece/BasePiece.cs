@@ -82,6 +82,9 @@ public class BasePiece : MonoBehaviour
     public PieceHighlight PieceHighlightPrefab;
     public Transform PieceHighlightHolder;
 
+    public Transform ArtHolder;
+    public Material[] ArtItemMaterials;
+
     public PieceDimension PieceInfo;
     public RotationDirection CurrentRotation;
     public PieceHighlight[] CurrentHighlights { get; protected set; }
@@ -91,10 +94,17 @@ public class BasePiece : MonoBehaviour
     private void Awake()
     {
         PieceInfo.Init();
-
         InitHighlights();
-
         PiecePoints = CurrentHighlights != null ? CurrentHighlights.Length : 0;
+
+        if (ArtHolder != null)
+        {
+            Renderer[] renderers = ArtHolder.GetComponentsInChildren<Renderer>();
+            ArtItemMaterials = new Material[renderers.Length];
+
+            for (int i = 0; i < renderers.Length; i++)
+                ArtItemMaterials[i] = renderers[i].material;
+        }
     }
 
     protected void InitHighlights()
@@ -287,6 +297,18 @@ public class BasePiece : MonoBehaviour
 
         return false;
     }
+
+    public void ColorPiece(Color newColor)
+    {
+        if (ArtItemMaterials == null)
+            return;
+
+        for (int i = 0; i < ArtItemMaterials.Length; i++)
+        {
+            ArtItemMaterials[i].color = newColor;
+        }
+    }
+    
 
     void OnDrawGizmosSelected()
     {
