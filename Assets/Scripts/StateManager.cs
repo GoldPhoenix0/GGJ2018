@@ -11,7 +11,8 @@ public class StateManager : MonoBehaviour {
         PlayerXPlace,
         PlayerXFinish,
         ScoreRound,
-        EndRound
+        EndRound,
+        RestartGame
 
     }
     [SerializeField]
@@ -19,6 +20,8 @@ public class StateManager : MonoBehaviour {
 
     [SerializeField]
     private float ScoringSpeed = 1.0f;
+
+    private float RestartGameDelay = 5.0f;
 
     public gameState currentState = gameState.Init;
     private int startPlayer = 0;
@@ -147,6 +150,13 @@ public class StateManager : MonoBehaviour {
             }
         }
 
+        if(BoardManager.instance.IsGameOver())
+        {
+            // Show Game Ending Flair Here!
+            currentState = gameState.RestartGame;
+            _timer = 0;
+            return;
+        }
 
         InitRound();
 
@@ -178,6 +188,11 @@ public class StateManager : MonoBehaviour {
             PrevPlayer = PersistentData.instance.NumberOfPlayers - 1;
 
         return PrevPlayer;
+    }
+
+    private void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 
     // Update is called once per frame
@@ -222,6 +237,13 @@ public class StateManager : MonoBehaviour {
                 GSM.DeSelectPlayer(PreviousPlayer());
                 EndRound();
             }
+        }
+        else if(currentState == gameState.RestartGame)
+        {
+            _timer += Time.deltaTime;
+
+            if (_timer > RestartGameDelay)
+                RestartGame();
         }
 	}
 }
