@@ -9,6 +9,15 @@ public class PlayerScore : MonoBehaviour {
     private Text playerScoreLabel;
     [SerializeField]
     private Text playerScoreField;
+    [SerializeField]
+    private Image ScoreBackground;
+    [SerializeField]
+    private Sprite SelectedBackGround;
+    [SerializeField]
+    private Sprite DefaultSprite;
+
+
+
 
     private int _PlayerNumber;
 
@@ -40,12 +49,25 @@ public class PlayerScore : MonoBehaviour {
         {
             _PlayerNumber = value;
             playerScoreLabel.text = "Player " + (_PlayerNumber + 1).ToString();  // Since player numbers start from 0 but humans don't
+            if(_PlayerNumber >= 0 && _PlayerNumber < PersistentData.instance.PlayerColors.Length)
+                ScoreBackground.color = PersistentData.instance.PlayerColors[_PlayerNumber];
         }
     }
 
-	// Use this for initialization
-	void Start () {
-		
+    public void SetHighlight(bool isHighlighted)
+    {
+        if (isHighlighted)
+            ScoreBackground.sprite = SelectedBackGround;
+        else
+            ScoreBackground.sprite = DefaultSprite;
+
+
+    }
+
+
+    // Use this for initialization
+    void Awake () {
+        DefaultSprite = ScoreBackground.sprite;
 	}
 	
     public void SetScorePosition()
@@ -66,8 +88,4 @@ public class PlayerScore : MonoBehaviour {
 
     }
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

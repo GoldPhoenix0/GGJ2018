@@ -46,11 +46,14 @@ public class StateManager : MonoBehaviour {
             PieceCollides[i] = false;
         }
 
+        GSM.DeSelectPlayer(CurrentPlayer);
         CurrentPlayer = startPlayer;
 
         BoardManager.instance.GetNextPiece();
 
         currentState = gameState.PlayerXPlace;
+
+        GSM.SelectPlayer(CurrentPlayer);
     }
 	
     public void CommitPlacement( )
@@ -66,11 +69,16 @@ public class StateManager : MonoBehaviour {
         EndPlayerTurn();
 
         // prepare for next player
+        GSM.DeSelectPlayer(CurrentPlayer);
         AdvanceCurrentPlayer();
+        GSM.SelectPlayer(CurrentPlayer);
         // see if we've gotten back to the first player of this round
         if(CurrentPlayer == startPlayer)    // We've looped through all the players
         {
+
+            GSM.DeSelectPlayer(CurrentPlayer);
             currentState = gameState.ScoreRound;
+            _timer = 0;
             ScoreCurrentRound();
         }
         else // Next players turn
@@ -115,6 +123,7 @@ public class StateManager : MonoBehaviour {
     {
         // prep for next round
         // Every round the start player moves on for the next round
+
         startPlayer++;
         if (startPlayer >= PersistentData.instance.NumberOfPlayers)
             startPlayer = 0;
@@ -153,10 +162,22 @@ public class StateManager : MonoBehaviour {
         // loop around
         if (CurrentPlayer >= PersistentData.instance.NumberOfPlayers)
             CurrentPlayer = 0;
+
     }
 
-	// Update is called once per frame
-	void Update () {
+    private int PreviousPlayer()
+    {
+        int PrevPlayer = CurrentPlayer;
+
+        PrevPlayer--;
+        if (PrevPlayer < 0)
+            PrevPlayer = PersistentData.instance.NumberOfPlayers - 1;
+
+        return PrevPlayer;
+    }
+
+    // Update is called once per frame
+    void Update () {
         if(currentState == gameState.ScoreRound)
         {
             _timer += Time.deltaTime;
@@ -164,6 +185,9 @@ public class StateManager : MonoBehaviour {
             if(_timer >= ScoringSpeed)
             {
                 _timer = 0;
+
+                GSM.DeSelectPlayer(PreviousPlayer());
+                GSM.SelectPlayer(CurrentPlayer);
                 RevealPlacedPiece();
                 if(PieceCollides[CurrentPlayer])
                 {
@@ -177,7 +201,6 @@ public class StateManager : MonoBehaviour {
                 }
 
                 AdvanceCurrentPlayer();
-
                 if(CurrentPlayer == startPlayer)
                 {
                     _timer = 0;
@@ -190,8 +213,11 @@ public class StateManager : MonoBehaviour {
         {
             _timer += Time.deltaTime;
 
-            if(_timer >= ScoringSpeed)
+            if (_timer >= ScoringSpeed)
+            {
+                GSM.DeSelectPlayer(PreviousPlayer());
                 EndRound();
+            }
         }
 	}
 }

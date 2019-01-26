@@ -13,7 +13,7 @@ public class GameScoreManager : MonoBehaviour
     private List<PlayerScore> Scores;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         Scores = new List<PlayerScore>();
 
@@ -30,6 +30,16 @@ public class GameScoreManager : MonoBehaviour
             Scores[i].SetScorePosition();
             Scores[i].PlayerScoreValue = 0;
         }
+    }
+
+    public void SelectPlayer(int i)
+    {
+        Scores[i].SetHighlight(true);
+    }
+
+    public void DeSelectPlayer(int i)
+    {
+        Scores[i].SetHighlight(false);
     }
 
     /// <summary>
