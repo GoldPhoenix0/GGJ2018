@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4442672337924070}
   - component: {fileID: 114783724706833228}
   m_Layer: 0
-  m_Name: V3x2
+  m_Name: PieceTV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,11 +85,11 @@ MonoBehaviour:
   PieceHighlightHolder: {fileID: 4768323051759298}
   ArtHolder: {fileID: 0}
   ArtItemMaterials: []
-  PlacementAudio: {fileID: 8300000, guid: 226e2765692e45044a10e833713c59bf, type: 3}
+  PlacementAudio: {fileID: 8300000, guid: 295d01da8c66f8742ba2c7ac669db57e, type: 3}
   PieceInfo:
     Columns:
-    - RowBools: 0100
-    - RowBools: 0100
-    - RowBools: 0001
-    PivotPoint: {x: 0, y: 1}
+    - RowBools: 01
+    - RowBools: 01
+    - RowBools: 01
+    PivotPoint: {x: 0, y: 0}
   CurrentRotation: 0
