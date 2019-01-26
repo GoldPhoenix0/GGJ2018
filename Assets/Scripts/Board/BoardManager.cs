@@ -119,7 +119,8 @@ public class BoardManager : MonoBehaviour
 
         if(currentScrollWheelDuration <= 0f && Mathf.Abs(mouseWheel) > 0.01f)
         {
-            CyclePiece((int)Mathf.Sign(mouseWheel));
+            // Use the scroll view to select the piece and since people will expect the scroll wheel to move it, don't change pieces via the mouse scrollWheel anymore
+            // CyclePiece((int)Mathf.Sign(mouseWheel));
             currentScrollWheelDuration = timeBeforeScrollWheel;
         }
 

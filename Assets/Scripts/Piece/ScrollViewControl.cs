@@ -9,10 +9,9 @@ public class ScrollViewControl : MonoBehaviour {
 		
 	}
 	
-    public void thingy(int FurnitureID)
+    public void ChangeSelectedFurniture(int FurnitureID)
     {
-
-        Debug.Log(FurnitureID);
+        BoardManager.instance.UpdatePiece(FurnitureID);
     }
 
 	// Update is called once per frame

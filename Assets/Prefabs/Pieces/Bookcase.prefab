@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4442672337924070}
   - component: {fileID: 114783724706833228}
   m_Layer: 0
-  m_Name: PieceTV
+  m_Name: Bookcase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
   PieceHighlightHolder: {fileID: 4768323051759298}
   ArtHolder: {fileID: 0}
   ArtItemMaterials: []
-  PlacementAudio: {fileID: 8300000, guid: 295d01da8c66f8742ba2c7ac669db57e, type: 3}
+  PlacementAudio: {fileID: 8300000, guid: 07a497ab9652e7542aed3cf5301e4aeb, type: 3}
   PieceInfo:
     Columns:
     - RowBools: 01
