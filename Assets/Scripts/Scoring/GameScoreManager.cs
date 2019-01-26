@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
+using System.Linq;
 
 public class GameScoreManager : MonoBehaviour
 {
@@ -9,6 +11,15 @@ public class GameScoreManager : MonoBehaviour
     private GameObject scorePanel;
     [SerializeField]
     private GameObject scoreDisplayPrefab;
+
+    [SerializeField]
+    private GameObject FinalResultsGroup;
+    [SerializeField]
+    private Image ResultsBackground;
+    [SerializeField]
+    private Text ResultsHeading;
+    [SerializeField]
+    private Text ResultsList;
 
     private List<PlayerScore> Scores;
 
@@ -52,9 +63,43 @@ public class GameScoreManager : MonoBehaviour
         Scores[PlayerNumber].PlayerScoreValue = Scores[PlayerNumber].PlayerScoreValue + scoreChange;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowResultsScreen()
     {
+        FinalResultsGroup.SetActive(true);
+
+        Dictionary<int, int> finalScores = new Dictionary<int, int>(Scores.Count);
+
+        for (int i = 0; i < Scores.Count; i++)
+        {
+            PlayerScore checkScore = Scores[i];
+            finalScores.Add(checkScore.PlayerNumber, checkScore.PlayerScoreValue);
+        }
+
+        var orderedList = finalScores.OrderBy(x => x.Value);
+
+        int resultLine = 0;
+        string resultsText = "";
+        foreach(KeyValuePair<int, int> order in orderedList)
+        {
+            int playerNumber = order.Key + 1;
+
+            if(resultLine == 0)
+            {
+                ResultsHeading.text = "Player " + HelperFunctions.ConvertNumberToText(playerNumber) + " Wins!";
+
+                ResultsBackground.color = PersistentData.instance.PlayerColors[order.Key];
+            }
+            else
+            {
+                resultsText += "\n";
+            }
+
+            resultsText += "Player " + playerNumber.ToString() + " - " + order.Value.ToString();
+
+            resultLine++;
+        }
+
+        ResultsList.text = resultsText;
 
     }
 }

@@ -155,6 +155,7 @@ public class StateManager : MonoBehaviour {
             // Show Game Ending Flair Here!
             currentState = gameState.RestartGame;
             _timer = 0;
+            GSM.ShowResultsScreen();
             return;
         }
 
@@ -190,7 +191,7 @@ public class StateManager : MonoBehaviour {
         return PrevPlayer;
     }
 
-    private void RestartGame()
+    public void RestartGame()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
@@ -240,10 +241,10 @@ public class StateManager : MonoBehaviour {
         }
         else if(currentState == gameState.RestartGame)
         {
-            _timer += Time.deltaTime;
+            //_timer += Time.deltaTime;
 
-            if (_timer > RestartGameDelay)
-                RestartGame();
+            //if (_timer > RestartGameDelay)
+            //    RestartGame();
         }
 	}
 }
