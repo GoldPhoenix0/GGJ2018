@@ -152,6 +152,7 @@ public class StateManager : MonoBehaviour {
 
     private void RevealPlacedPiece()
     {
+        PlayerPlacements[CurrentPlayer].ColorPiece(PersistentData.instance.PlayerColors[CurrentPlayer], true);
         PlayerPlacements[CurrentPlayer].gameObject.SetActive(true);
 
     }

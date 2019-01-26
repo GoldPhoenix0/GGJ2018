@@ -297,7 +297,7 @@ public class BasePiece : MonoBehaviour
         return false;
     }
 
-    public void ColorPiece(Color newColor)
+    public void ColorPiece(Color newColor, bool changeHighlight = false)
     {
         if (ArtItemMaterials == null)
             return;
@@ -305,6 +305,14 @@ public class BasePiece : MonoBehaviour
         for (int i = 0; i < ArtItemMaterials.Length; i++)
         {
             ArtItemMaterials[i].color = newColor;
+        }
+
+        if(changeHighlight && CurrentHighlights != null)
+        {
+            for (int i = 0; i < CurrentHighlights.Length; i++)
+            {
+                CurrentHighlights[i].EnableColor(newColor);
+            }
         }
     }
     
