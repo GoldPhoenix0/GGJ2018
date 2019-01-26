@@ -32,6 +32,16 @@ public class GameScoreManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Change the players score
+    /// </summary>
+    /// <param name="PlayerNumber">0 for first player</param>
+    /// <param name="scoreChange">The value to add to the players current score</param>
+    public void PlayerScoreDelta(int PlayerNumber, int scoreChange)
+    {
+        Scores[PlayerNumber].PlayerScoreValue = Scores[PlayerNumber].PlayerScoreValue + scoreChange;
+    }
+
     // Update is called once per frame
     void Update()
     {

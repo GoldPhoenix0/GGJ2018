@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SplashManager : MonoBehaviour {
 	private float _ftimer;
-
+    
 	[SerializeField]
 	private float _timeLimit;
 

@@ -7,6 +7,9 @@ public class PersistentData : MonoBehaviour
     public int NumberOfPlayers = 2;
     public int MaxNumberOfPlayers = 4;
 
+    public int BoardXSize = 5;
+    public int BoardYSize = 10;
+
     public static PersistentData _instance;
 
 

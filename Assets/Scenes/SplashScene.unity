@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NumberOfPlayers: 2
-  MaxNumberOfPlayers: 4
+  MaxNumberOfPlayers: 7
 --- !u!4 &632985623
 Transform:
   m_ObjectHideFlags: 0

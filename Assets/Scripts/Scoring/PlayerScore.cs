@@ -14,6 +14,9 @@ public class PlayerScore : MonoBehaviour {
 
     private int _PlayerScoreValue;
 
+    /// <summary>
+    /// Get/Set players current score, will update UI
+    /// </summary>
     public int PlayerScoreValue
     {
         get
@@ -53,10 +56,12 @@ public class PlayerScore : MonoBehaviour {
         Vector2 vals;
         vals = myRT.anchorMin;
         vals.x = PlayerNumber * (1.0f / PersistentData.instance.NumberOfPlayers);
+        vals.y = 0;
         myRT.anchorMin = vals;
 
         vals = myRT.anchorMax;
         vals.x = (PlayerNumber + 1) * (1.0f / PersistentData.instance.NumberOfPlayers);
+        vals.y = 1;
         myRT.anchorMax = vals;
 
     }
