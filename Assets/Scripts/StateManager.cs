@@ -166,8 +166,6 @@ public class StateManager : MonoBehaviour {
                 RevealPlacedPiece();
                 if(PieceCollides[CurrentPlayer])
                 {
-                    Debug.Log("collision" + CurrentPlayer );
-                    Debug.Log(PieceCollides[CurrentPlayer]);
                     // Play collision sound!
                 }
                 AdvanceCurrentPlayer();

@@ -24,7 +24,6 @@ public class GameScoreManager : MonoBehaviour
             tmpGO = Instantiate(scoreDisplayPrefab, scorePanel.transform);
 
             tmpPS = tmpGO.GetComponent<PlayerScore>();
-            Debug.Log(tmpPS);
             Scores.Add(tmpPS);
 
             Scores[i].PlayerNumber = i;

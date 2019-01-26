@@ -128,8 +128,6 @@ public class BoardManager : MonoBehaviour
                 isValid = false;
         }
 
-        Debug.Log("Placing Piece valid? " + isValid);
-
         return isValid;
     }
 
