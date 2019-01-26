@@ -85,7 +85,7 @@ MonoBehaviour:
   PieceHighlightHolder: {fileID: 4768323051759298}
   ArtHolder: {fileID: 0}
   ArtItemMaterials: []
-  PlacementAudio: {fileID: 8300000, guid: 07a497ab9652e7542aed3cf5301e4aeb, type: 3}
+  PlacementAudio: {fileID: 8300000, guid: 4d2093b6ea10a9c479816ba3a205884e, type: 3}
   PieceInfo:
     Columns:
     - RowBools: 0101
