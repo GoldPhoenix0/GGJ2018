@@ -1500,7 +1500,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4a2fc1db17684dd41bfabfed39a0478a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 42fef2a815ad0984aa812e5c5755170f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3160,7 +3160,7 @@ RectTransform:
   m_Father: {fileID: 1814107697}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.75565976}
+  m_AnchorMin: {x: 0, y: 0.86211807}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -3887,7 +3887,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 281.4799}
+  m_AnchoredPosition: {x: 0, y: 158.84}
   m_SizeDelta: {x: 0, y: 2304}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &949306269
@@ -6076,7 +6076,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4a237b0249f4cc54d86fc4db0c7f5831, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 75f0e80e7e1b4744791bffe82bb2c6b4, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -7122,7 +7122,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.7}
   m_AnchoredPosition: {x: -0.5999985, y: 4}
-  m_SizeDelta: {x: -64.535416, y: -7.790909}
+  m_SizeDelta: {x: -50.758217, y: -7.790909}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1823456672
 MonoBehaviour:
@@ -8237,7 +8237,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.7}
   m_AnchoredPosition: {x: -0.5999832, y: 3}
-  m_SizeDelta: {x: -63.076843, y: -3.7909088}
+  m_SizeDelta: {x: -42.554424, y: -3.7909088}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2010670623
 MonoBehaviour:
@@ -8924,7 +8924,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 756222418}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24434026
+  m_Size: 0.13788193
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
