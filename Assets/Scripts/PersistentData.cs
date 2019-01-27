@@ -13,7 +13,7 @@ public class PersistentData : MonoBehaviour
     public int MinBoardSize = 5;
     public int MaxBoardSize = 20;
 
-    public Color32[] PlayerColors = new Color32[10]
+    protected Color32[] _PlayerColors = new Color32[10]
     {
         new Color32( 67, 99,216, 255), // Blue
         new Color32( 60,180, 75, 255), // Green
@@ -26,6 +26,7 @@ public class PersistentData : MonoBehaviour
         new Color32(128,128,128, 255), // Grey
         new Color32(230, 25, 75, 255), // Red
     };
+    public Color32[] PlayerColors { get { return _PlayerColors; } }
 
     public static PersistentData _instance;
 
