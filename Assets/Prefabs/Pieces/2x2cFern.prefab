@@ -52,7 +52,7 @@ GameObject:
   - component: {fileID: 4442672337924070}
   - component: {fileID: 114783724706833228}
   m_Layer: 0
-  m_Name: c2x2
+  m_Name: 2x2cFern
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
