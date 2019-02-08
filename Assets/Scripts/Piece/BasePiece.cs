@@ -89,6 +89,8 @@ public class BasePiece : MonoBehaviour
 
     public PieceDimension PieceInfo;
     public RotationDirection CurrentRotation;
+	public int PieceIndex;
+	public Vector3 PieceLocation;
     public PieceHighlight[] CurrentHighlights { get; protected set; }
     public int PiecePoints { get; protected set; }
     //protected Vector2Int[,] RelativeDirections;

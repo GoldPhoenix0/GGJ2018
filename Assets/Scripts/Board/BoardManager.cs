@@ -128,6 +128,7 @@ public class BoardManager : MonoBehaviour
         if (newLocation != previousTouchedBoardGrid)
         {
             CurrentSelectedPiece.transform.localPosition = newLocation.transform.localPosition;
+			CurrentSelectedPiece.PieceLocation = CurrentSelectedPiece.transform.localPosition;
             CurrentSelectedPiece.UpdateHits();
 
             SFXManager.instance.PlayAudioClip(SelectLocationAudioClip);
@@ -276,7 +277,6 @@ public class BoardManager : MonoBehaviour
         LastPieceIndex = (PiecePrefabs.Length + index) % PiecePrefabs.Length;
 
         BasePiece piece = PiecePrefabs[LastPieceIndex];
-
         Vector3 newPosition = Vector3.zero;
         if (CurrentSelectedPiece != null)
         {
@@ -287,6 +287,7 @@ public class BoardManager : MonoBehaviour
         CurrentSelectedPiece = PieceHolder.InstantiateChild<BasePiece>(piece.gameObject);
         CurrentSelectedPiece.transform.localPosition = newPosition;
         CurrentSelectedPiece.RotatePiece(CurrentPieceRotation);
+		CurrentSelectedPiece.PieceIndex = LastPieceIndex;	// Track the index so in network games, other clients can spawn it.
     }
 
     public void ChangeRotation(int dir)
@@ -403,4 +404,16 @@ public class BoardManager : MonoBehaviour
         sizeIndex = Mathf.Clamp(sizeIndex, 0, UnknownPlacementAudioClips.Length - 1);
         SFXManager.instance.PlayAudioClip(UnknownPlacementAudioClips[sizeIndex]);
     }
+
+	public BasePiece GeneratePieceAt (int pIndex, Vector3 pLoc, BasePiece.RotationDirection pRot)
+	{
+		BasePiece piece;
+
+		piece = PieceHolder.InstantiateChild<BasePiece> (PiecePrefabs [pIndex].gameObject);
+		piece.transform.localPosition = pLoc;
+		piece.RotatePiece (pRot);
+
+		return piece;
+	}
+
 }

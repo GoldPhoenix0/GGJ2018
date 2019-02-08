@@ -21,7 +21,8 @@ public class StateManager : MonoBehaviour {
     [SerializeField]
     private float ScoringSpeed = 1.0f;
 
-    //private float RestartGameDelay = 5.0f;
+	[SerializeField]
+	private float RestartGameDelay = 5.0f;
 
     public gameState currentState = gameState.Init;
     private int startPlayer = 0;
