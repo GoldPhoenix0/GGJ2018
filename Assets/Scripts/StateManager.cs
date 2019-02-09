@@ -52,8 +52,8 @@ public class StateManager : MonoBehaviour {
         GSM.DeSelectPlayer(CurrentPlayer);
         CurrentPlayer = startPlayer;
 
-        BoardManager.instance.GetNextPiece();
         BoardManager.instance.UpdatePlayerColor(CurrentPlayer);
+        BoardManager.instance.GetNextPiece();
 
         currentState = gameState.PlayerXPlace;
 
