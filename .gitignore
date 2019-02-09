@@ -4,7 +4,6 @@ UnityGenerated/
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
-[Bb]uilds/
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory
@@ -43,5 +42,4 @@ Thumbs.db
 sysinfo.txt
 
 # Builds
-*.apk
 *.unitypackage
