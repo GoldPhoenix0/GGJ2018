@@ -23,9 +23,9 @@ public class MenuScript : MonoBehaviour {
         PersistentData.instance.NumberOfPlayers += deltaNOP;
 
         if (PersistentData.instance.NumberOfPlayers > PersistentData.instance.MaxNumberOfPlayers)
-            PersistentData.instance.NumberOfPlayers = 2;
+            PersistentData.instance.NumberOfPlayers = PersistentData.instance.MinNumberOfPlayers;
 
-        if (PersistentData.instance.NumberOfPlayers == 1)
+        if (PersistentData.instance.NumberOfPlayers < PersistentData.instance.MinNumberOfPlayers)
             PersistentData.instance.NumberOfPlayers = PersistentData.instance.MaxNumberOfPlayers;
 
         // update UI

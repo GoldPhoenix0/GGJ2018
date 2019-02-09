@@ -187,10 +187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93575f24e0114994e9fe9f8dbf7da6d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NumberOfPlayers: 2
+  NumberOfPlayers: 4
+  MinNumberOfPlayers: 2
   MaxNumberOfPlayers: 8
-  BoardXSize: 5
-  BoardYSize: 10
+  BoardXSize: 8
+  BoardYSize: 8
   MinBoardSize: 5
   MaxBoardSize: 20
 --- !u!4 &632985623
