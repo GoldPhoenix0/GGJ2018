@@ -1305,6 +1305,7 @@ GameObject:
   - component: {fileID: 854093311}
   - component: {fileID: 854093313}
   - component: {fileID: 854093312}
+  - component: {fileID: 854093314}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -1368,6 +1369,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854093310}
   m_CullTransparentMesh: 0
+--- !u!114 &854093314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854093310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1
 --- !u!1 &959301651
 GameObject:
   m_ObjectHideFlags: 0
@@ -2094,7 +2109,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 25
+    m_MaxSize: 40
     m_Alignment: 7
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2546,26 +2561,26 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Programing Team
+  m_Text: '<b>Programing Team</b>
 
     Peter Armstrong
 
     Hadleigh Barton-Ancliffe
 
 
-    Audio Team
+    <b>Audio Team</b>
 
-    Music
+    <i>Music</i>
 
     Aaron Edwards
 
 
-    SFX
+    <i>SFX</i>
 
     Cal Wakeling
 
 
-    Guest Artist
+    <b>Guest Artist</b>
 
     Jessica Brett'
 --- !u!222 &1686120172
