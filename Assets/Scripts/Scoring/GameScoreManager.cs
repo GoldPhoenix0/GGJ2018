@@ -28,20 +28,24 @@ public class GameScoreManager : MonoBehaviour
     {
         Scores = new List<PlayerScore>();
 
-        for (int i = 0; i < PersistentData.instance.NumberOfPlayers; i++)
-        {
-            GameObject tmpGO;
-            PlayerScore tmpPS;
-            tmpGO = Instantiate(scoreDisplayPrefab, scorePanel.transform);
 
-            tmpPS = tmpGO.GetComponent<PlayerScore>();
-            Scores.Add(tmpPS);
-
-            Scores[i].PlayerNumber = i;
-            Scores[i].SetScorePosition();
-            Scores[i].PlayerScoreValue = 0;
-        }
     }
+
+	public void InitGSM ()
+	{
+		for (int i = 0; i < PersistentData.instance.NumberOfPlayers; i++) {
+			GameObject tmpGO;
+			PlayerScore tmpPS;
+			tmpGO = Instantiate (scoreDisplayPrefab, scorePanel.transform);
+
+			tmpPS = tmpGO.GetComponent<PlayerScore> ();
+			Scores.Add (tmpPS);
+
+			Scores [i].PlayerNumber = i;
+			Scores [i].SetScorePosition ();
+			Scores [i].PlayerScoreValue = 0;
+		}
+	}
 
     public void SelectPlayer(int i)
     {

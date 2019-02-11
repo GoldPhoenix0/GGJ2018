@@ -63,6 +63,7 @@ public class MenuScript : MonoBehaviour {
         ChangeNumberOfPlayers(0);
         ChangeGridXSize(0);
         ChangeGridYSize(0);
+		PersistentData.instance.MenuSceneName = SceneManager.GetActiveScene ().name;
     }
 
 	public void StartGame()

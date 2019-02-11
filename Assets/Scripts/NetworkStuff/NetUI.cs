@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class NetUI : MonoBehaviour
 {
@@ -10,11 +11,17 @@ public class NetUI : MonoBehaviour
 	public bool [] CommittedPiece;
 	public BasePiece [] PlayerPlacements;
 	public bool[] PieceCollides;
+	public bool isClient;
 
 
     // Start is called before the first frame update
     void Awake()
     {
+
+    }
+
+	public void InitArrays ()
+	{
 		AllPlayers = new List<NetStateManager> ();
 		Connected = new int [PersistentData.instance.NumberOfPlayers];
 		CommittedPiece = new bool [PersistentData.instance.NumberOfPlayers];
@@ -25,7 +32,7 @@ public class NetUI : MonoBehaviour
 			Connected [i] = -1; // -1 for not connected
 			CommittedPiece [i] = false;
 		}
-    }
+	}
 
 	public int GetNextPlayerID ()
 	{
@@ -100,7 +107,13 @@ public class NetUI : MonoBehaviour
 
 	public void RestartGame ()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene (1);
+		if (isClient)
+			FindObjectOfType<NetworkManager> ().StopClient ();
+		else
+			FindObjectOfType<NetworkManager> ().StopHost ();
+
+			
+		//UnityEngine.SceneManagement.SceneManager.LoadScene (PersistentData.instance.MenuSceneName);
 	}
 
 	public void OnGameOverStart ()

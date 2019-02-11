@@ -7,11 +7,12 @@ public class NetStateManager : NetworkBehaviour
 {
 
     public enum gameState {
-		Paused,
+		WaitingForPlayers,
 		Init,
 		PlayerXPlace,
 		PlayerXFinish,
 		ScoreRound,
+		Scoring,
 		EndRound,
 		RestartGame
 
@@ -28,36 +29,77 @@ public class NetStateManager : NetworkBehaviour
 	[SerializeField]
 	private float RestartGameDelay = 5.0f;
 
-	public gameState currentState = gameState.Init;
+	public gameState currentState = gameState.WaitingForPlayers;
 
 	[SyncVar]
-	public int PlayerID=0;
+	public int PlayerID=-1;
+
+	[SyncVar]
+	public int boardX;
+	[SyncVar]
+	public int boardY;
+	[SyncVar]
+	public int NumOfPlayers;
 
 	private float _timer;
+
+	private void Awake ()
+	{
+		currentState = gameState.WaitingForPlayers;
+	}
 
 	// Use this for initialization
 	void Start ()
 	{
-
 		GSM = FindObjectOfType<GameScoreManager> ();
 		netManager = FindObjectOfType<NetUI> ();
 
 		// Only call this for the local player netStateManager otherwise it will overwrite other peoples player ID's on the server
 		if (isLocalPlayer) {
-			CmdAddPlayer ();
-		}
+			// Idea is that syncvar's will make sure this class has the board size and number of players from the server
+			// Though depending how things work, it might be the server instantiating the netStateManager object from its prefab, not the clients version of the prefab, so these values would already be correct
+			// so wouldn't actually need to be syncvars.  But either way, it should mean the client can now save these values into the persistentData object
+			// so that the game can then be properly set up
+			PersistentData.instance.BoardXSize = boardX;
+			PersistentData.instance.BoardYSize = boardY;
+			PersistentData.instance.NumberOfPlayers = NumOfPlayers;
+			netManager.InitArrays ();	// Needs to be done early on so other init's and such don't try and refer to an uninitialised array/list.
+			FindObjectOfType<BoardManager> ().Init ();
+			FindObjectOfType<SetupOrthoCamera> ().SetupView ();
+			GSM.InitGSM ();
 
+			CmdAddPlayer ();
+
+			// Save whether it's a client or the "host" so we know the right way of disconnecting at the end of the game.
+			if (isServer) {
+				netManager.isClient = false;
+			} else {
+				netManager.isClient = true;
+			}
+		}
+		currentState = gameState.WaitingForPlayers;
 		netManager.registerPlayer (this);
 
-
-		InitRound ();
 	}
+
+
+	/*
+	public override void OnStartClient ()
+	{
+		Debug.Log ("OnStartClient()");
+
+	}
+*/
 
 	[Command]
 	private void CmdAddPlayer ()
 	{
 		// TODO check and handle if -1 is returned aka no room for this new player.
 		PlayerID = netManager.GetNextPlayerID ();
+		this.gameObject.name = "Player" + PlayerID;
+		if (PlayerID == (PersistentData.instance.NumberOfPlayers - 1)) {
+			RpcAllPlayersInGame ();
+		}
 	}
 
 	private void InitRound ()
@@ -69,6 +111,7 @@ public class NetStateManager : NetworkBehaviour
 		netManager.ResetForNewRound ();
 
 		if (isLocalPlayer) {
+
 			BoardManager.instance.GetNextPiece ();
 			BoardManager.instance.UpdatePlayerColor (PlayerID);
 			GSM.SelectPlayer (PlayerID);
@@ -93,9 +136,6 @@ public class NetStateManager : NetworkBehaviour
 
 		EndPlayerTurn ();
 
-		// prepare for next player
-		GSM.DeSelectPlayer (PlayerID);
-
 		// Let Server know player has commited to their placement
 		CmdCommitPiece ( netManager.PlayerPlacements [PlayerID].PieceIndex,netManager.PlayerPlacements [PlayerID].PieceLocation, netManager.PlayerPlacements[PlayerID].CurrentRotation );
 	}
@@ -104,12 +144,18 @@ public class NetStateManager : NetworkBehaviour
 	[Command]
 	private void CmdCommitPiece (int pIndex, Vector3 pLoc, BasePiece.RotationDirection pRot )
 	{
-		Debug.Log (pIndex + "-" + pLoc + "\n" + pRot);
 		RpcPiecePlacement (pIndex, pLoc, pRot);
 
 		if (netManager.TrackCommit (PlayerID)) {
 			RpcAllPiecesPlaced ();
 		}
+	}
+
+
+	[ClientRpc]
+	public void RpcAllPlayersInGame ()
+	{
+		netManager.SetAllGameStates( gameState.Init);
 	}
 
 	[ClientRpc]
@@ -149,6 +195,9 @@ public class NetStateManager : NetworkBehaviour
 		for (int i = 0; i < PersistentData.instance.NumberOfPlayers; i++) {
 			for (int j = i + 1; j < PersistentData.instance.NumberOfPlayers; j++) {
 				if (netManager.PlayerPlacements [i].DoesOtherPieceCollide (netManager.PlayerPlacements [j])) {
+					// Easier to just mark both pieces now even though it will double up as otherwise we have to check for edge cases as 
+					// if we just mark i's, then the piece at the end of the list will never get marked and if
+					// we just mark the i's, the first piece in the list will never get marked
 					netManager.PieceCollides [i] = true;
 					netManager.PieceCollides [j] = true;
 					break;
@@ -210,7 +259,8 @@ public class NetStateManager : NetworkBehaviour
 				SFXManager.instance.PlayAudioClip (netManager.PlayerPlacements [i].PlacementAudio);
 			}
 		}
-
+		currentState = gameState.EndRound;
+		_timer = 0;
 	}
 
 
@@ -218,19 +268,23 @@ public class NetStateManager : NetworkBehaviour
 	void Update ()
 	{
 		if (isLocalPlayer) {
+			// Checking if PlayerID is not -1 to ensure the syncVar has had time to reach the client before we do initialisation
+			// Only really matters when first starting the game and for the last person to join, as it's only then that this
+			// tends to happen on the clients before the syncVar containing the playerID is properly set
+			if (currentState == gameState.Init && PlayerID != -1) {
+				InitRound ();
+				netManager.SetAllGameStates (gameState.PlayerXPlace);
+			}
+			else
 			// If all players have commited their pieces, start the RevealPlayerPieces coroutine?
 			if (currentState == gameState.ScoreRound) {
 
 				StartCoroutine (RevealPlayerPieces ());
 				_timer = 0;
-				netManager.SetAllGameStates(gameState.EndRound);
+				netManager.SetAllGameStates(gameState.Scoring);
 
 			} else if (currentState == gameState.EndRound) {
-				_timer += Time.deltaTime;
-
-				if (_timer >= ScoringSpeed * PersistentData.instance.NumberOfPlayers) {
-					EndRound ();
-				}
+				EndRound ();
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class BoardManager : MonoBehaviour
 {
@@ -30,13 +31,18 @@ public class BoardManager : MonoBehaviour
 
     private void Awake()
     {
+		
         if (instance != null)
             Destroy(instance.gameObject);
 
         instance = this;
 
-        Init();
+		// Have the player objects call Init for network games so can be sure the board sizes and number of players in PersistentData are the right ones
+		// If we just came from the MenuScene, it's not a network game, so do the Init now.
+		if(PersistentData.instance.MenuSceneName == "MenuScene")
+        	Init();
     }
+
 
     public Coroutine Init()
     {
@@ -265,6 +271,8 @@ public class BoardManager : MonoBehaviour
     public void UpdatePlayerColor(int playerIndex)
     {
         CurrentPlayerColor = PersistentData.instance.PlayerColors[playerIndex];
+		if(CurrentSelectedPiece != null)
+			CurrentSelectedPiece.ColorPiece (CurrentPlayerColor, true);	// Make sure the highlight colour is changed straight away
     }
 
     public void CyclePiece(int dir)

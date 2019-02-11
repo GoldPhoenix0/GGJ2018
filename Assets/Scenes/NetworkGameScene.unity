@@ -3689,7 +3689,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1902587672}
+      - m_Target: {fileID: 2000001874}
         m_MethodName: CommitPlayerPiece
         m_Mode: 1
         m_Arguments:
@@ -4067,7 +4067,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 346.57596}
+  m_AnchoredPosition: {x: 0, y: 320.87186}
   m_SizeDelta: {x: 0, y: 2304}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &949306269
@@ -4712,7 +4712,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1902587672}
+      - m_Target: {fileID: 2000001874}
         m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:
@@ -7850,14 +7850,13 @@ GameObject:
   - component: {fileID: 1902587671}
   - component: {fileID: 1902587670}
   - component: {fileID: 1902587669}
-  - component: {fileID: 1902587672}
   m_Layer: 0
   m_Name: TempNetworkHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1902587669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7865,7 +7864,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902587668}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 227461547, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
@@ -7972,21 +7971,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1902587672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902587668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1ee4ef87a19b4559b47a8ab930b874b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GSM: {fileID: 1706888768}
-  AllPlayers: []
-  Connected: 
 --- !u!1 &1904571868
 GameObject:
   m_ObjectHideFlags: 0
@@ -8549,7 +8533,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1902587672}
+      - m_Target: {fileID: 2000001874}
         m_MethodName: OnGameOverStart
         m_Mode: 1
         m_Arguments:
@@ -8952,6 +8936,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1984740599}
   m_CullTransparentMesh: 0
+--- !u!1 &2000001873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2000001875}
+  - component: {fileID: 2000001874}
+  m_Layer: 0
+  m_Name: NetManagerHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2000001874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000001873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ee4ef87a19b4559b47a8ab930b874b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GSM: {fileID: 1706888768}
+  AllPlayers: []
+  Connected: 
+  CommittedPiece: 
+  PlayerPlacements: []
+  PieceCollides: 
+--- !u!4 &2000001875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000001873}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.319238, y: -5.901737, z: 3.9708245}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2010670621
 GameObject:
   m_ObjectHideFlags: 0
@@ -9717,7 +9750,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 756222418}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.3008472
+  m_Size: 0.13926741
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

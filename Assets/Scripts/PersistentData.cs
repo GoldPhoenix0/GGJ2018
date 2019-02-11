@@ -30,6 +30,8 @@ public class PersistentData : MonoBehaviour
 
     public static PersistentData _instance;
 
+	public string MenuSceneName = "MenuScene";
+	public string LastIPAddress = "localhost";
 
     public static PersistentData instance
     {

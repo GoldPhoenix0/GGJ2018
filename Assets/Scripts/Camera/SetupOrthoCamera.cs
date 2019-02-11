@@ -13,20 +13,26 @@ public class SetupOrthoCamera : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        myCamera = Camera.main;
-        ScoringYMin = ScoringPanel.anchorMin.y;
-        Vector3 newPos = myCamera.transform.position;
+		SetupView ();
+	}
+
+	// Moved out from Start as it's also going to be called by the network clients once they've recieved the boards dimensions, etc.
+	public void SetupView ()
+	{
+		myCamera = Camera.main;
+		ScoringYMin = ScoringPanel.anchorMin.y;
+		Vector3 newPos = myCamera.transform.position;
 		// depending on the aspect ratio, even if there are more blocks in the y direction, may need to base the camera size on the size of blocks in the x direction
 		// Adding 0.5 onto the board sizes so the board isn't hard up against any edges
-		myCamera.orthographicSize = Mathf.Max( ((PersistentData.instance.BoardYSize + 0.5f) * 0.5f) / ScoringYMin, (PersistentData.instance.BoardXSize + 0.5f) / myCamera.aspect) ;
-        newPos.z = ((PersistentData.instance.BoardYSize / ScoringYMin) * 0.5f) - 0.5f;
+		myCamera.orthographicSize = Mathf.Max (((PersistentData.instance.BoardYSize + 0.5f) * 0.5f) / ScoringYMin, (PersistentData.instance.BoardXSize + 0.5f) / myCamera.aspect);
+		newPos.z = ((PersistentData.instance.BoardYSize / ScoringYMin) * 0.5f) - 0.5f;
 
 		// myCamera.size * myCamera.aspect = sizeOneBlocks that can fit on left half of screen.
 		// so half of that is where the midpoint of what blocks there are should be.
 		// so:  myCamera.size * myCamera.aspect * 0.5 + PersistentData.instance.BoardXSize * 0.5 is where left hand side of blocks should be
 		// and just need to subtract 0.5 to take into account that the blocks are positions by their centers, not their edge
 		newPos.x = (myCamera.orthographicSize * myCamera.aspect * 0.5f) + (PersistentData.instance.BoardXSize * 0.5f) - 0.5f;
-        myCamera.transform.position = newPos;
+		myCamera.transform.position = newPos;
 
 
 		// myCaera.orthographicSize is world units from center of screen to edge vertically

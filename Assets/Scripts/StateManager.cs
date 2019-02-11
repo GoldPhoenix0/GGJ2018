@@ -35,6 +35,7 @@ public class StateManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+		GSM.InitGSM ();
         PlayerPlacements = new BasePiece[PersistentData.instance.NumberOfPlayers];
         PieceCollides = new bool[PersistentData.instance.NumberOfPlayers];
         CurrentPlayer = 0;
